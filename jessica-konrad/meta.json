@@ -1,8 +1,14 @@
 {
-  "userId": "cmg52n1pu0000iib0ri33mz7p",
-  "channelId": "cmg52nfkm0004iib0jp0bk3n2",
-  "channelExternalId": "UC6ey3zDIU6-vbHMrm0mbBiA",
-  "siteSlug": "jessica-konrad",
-  "channelTitle": "Jessica Konrad",
-  "generatedAt": "2025-09-29T13:12:07.329Z"
+  "siteEnabled": true,
+  "siteName": "Look It Up",
+  "siteUrl": "https://sites.local/jessica-konrad",
+  "generatedAt": "2025-10-16T21:05:38.232Z",
+  "videoCount": 3,
+  "channel": {
+    "id": "UC6ey3zDIU6-vbHMrm0mbBiA",
+    "title": "Jessica Konrad",
+    "handle": "jklmservicesllc5145",
+    "description": "",
+    "subscriberCount": 1
+  }
 }
