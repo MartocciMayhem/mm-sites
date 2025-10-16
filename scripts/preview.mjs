@@ -71,7 +71,7 @@ function startFallback() {
   const python = process.platform === "win32" ? "python" : "python3";
   const pythonArgs = ["-m", "http.server", String(port), "--directory", root];
   console.warn("[mm-sites] falling back to python http.server");
-  const py = spawn(python, pythonArgs, { stdio: "inherit", shell: process.platform === "win32" });
+  const py = spawn(python, pythonArgs, { stdio: "inherit", shell: true });
   py.on("exit", (code) => process.exit(code ?? 0));
   py.on("error", (err) => {
     console.error("[mm-sites] fallback server failed:", err?.message || err);
@@ -79,7 +79,7 @@ function startFallback() {
   });
 }
 
-const child = spawn(serveCmd, serveArgs, { stdio: "inherit" });
+const child = spawn(serveCmd, serveArgs, { stdio: "inherit", shell: true });
 
 child.on("error", (err) => {
   console.warn("[mm-sites] serve failed:", err?.message || err);
