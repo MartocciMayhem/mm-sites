@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Martocci Mayhem Video Sites</title>
     <meta name="description" content="Creator microsite hosting powered by GitHub Pages">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -17,20 +23,24 @@
             color: white;
             padding: 20px;
         }
+
         .container {
             text-align: center;
             max-width: 600px;
         }
+
         h1 {
             font-size: 3rem;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
+
         p {
             font-size: 1.25rem;
             margin-bottom: 2rem;
             opacity: 0.9;
         }
+
         .logo {
             width: 120px;
             height: 120px;
@@ -41,8 +51,9 @@
             align-items: center;
             justify-content: center;
             font-size: 3rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
+
         .btn {
             display: inline-block;
             padding: 12px 32px;
@@ -52,32 +63,37 @@
             border-radius: 30px;
             font-weight: 600;
             transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
+
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
+
         .sites {
             margin-top: 3rem;
             padding: 2rem;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             backdrop-filter: blur(10px);
         }
+
         .site-link {
             display: block;
             padding: 12px;
             margin: 8px 0;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 8px;
             color: white;
             text-decoration: none;
             transition: background 0.2s;
         }
+
         .site-link:hover {
-            background: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.3);
         }
+
         .info {
             margin-top: 2rem;
             font-size: 0.9rem;
@@ -85,20 +101,23 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="logo">📺</div>
         <h1>Martocci Mayhem</h1>
         <p>Creator microsite hosting powered by GitHub Pages</p>
         <a href="https://martoccimayhem.com" class="btn">Go to Dashboard</a>
-        
+
         <div class="sites">
             <h2 style="margin-bottom: 1rem;">Active Microsites</h2>
-            <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem;">Generated channel microsites appear here</p>
-            
+            <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem;">Generated channel microsites appear here
+            </p>
+
             <!-- Example sites (will be populated dynamically) -->
             <div id="site-list">
-                <p style="font-size: 0.85rem; opacity: 0.6;">No sites generated yet. Create your first microsite from the dashboard!</p>
+                <p style="font-size: 0.85rem; opacity: 0.6;">No sites generated yet. Create your first microsite from
+                    the dashboard!</p>
             </div>
         </div>
 
@@ -112,7 +131,7 @@
         async function loadSites() {
             const knownSites = ['jessica-konrad', 'mayhem-maker']; // Add your channel slugs
             const siteList = document.getElementById('site-list');
-            
+
             const validSites = [];
             for (const slug of knownSites) {
                 try {
@@ -124,15 +143,16 @@
                     // Site doesn't exist
                 }
             }
-            
+
             if (validSites.length > 0) {
-                siteList.innerHTML = validSites.map(slug => 
+                siteList.innerHTML = validSites.map(slug =>
                     `<a href="/${slug}/" class="site-link">${slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</a>`
                 ).join('');
             }
         }
-        
+
         loadSites();
     </script>
 </body>
+
 </html>
