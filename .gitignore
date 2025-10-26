@@ -1,0 +1,44 @@
+# Node modules
+node_modules/
+
+# Build artifacts (we track dist/ for GitHub Pages)
+# dist/ is INTENTIONALLY tracked - DO NOT ignore it
+
+# Temporary build directories
+.temp-*
+.backup-*
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Package manager locks (keep package-lock.json but ignore yarn.lock if not using yarn)
+# yarn.lock
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+*.bak
+*.tmp
