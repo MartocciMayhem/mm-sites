@@ -76,6 +76,7 @@
             padding: 2rem;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
+            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
         }
 
@@ -127,27 +128,30 @@
     </div>
 
     <script>
-        // Auto-discover microsites by checking known directories
+        // Auto-discover microsites from manifest
         async function loadSites() {
-            const knownSites = ['jessica-konrad', 'mayhem-maker']; // Add your channel slugs
             const siteList = document.getElementById('site-list');
 
-            const validSites = [];
-            for (const slug of knownSites) {
-                try {
-                    const response = await fetch(`/${slug}/`, { method: 'HEAD' });
-                    if (response.ok) {
-                        validSites.push(slug);
-                    }
-                } catch (e) {
-                    // Site doesn't exist
+            try {
+                // Fetch the auto-generated manifest
+                const response = await fetch('/sites-manifest.json');
+                if (!response.ok) {
+                    throw new Error('Manifest not found');
                 }
-            }
 
-            if (validSites.length > 0) {
-                siteList.innerHTML = validSites.map(slug =>
-                    `<a href="/${slug}/" class="site-link">${slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</a>`
-                ).join('');
+                const data = await response.json();
+                const sites = data.sites || [];
+
+                if (sites.length > 0) {
+                    siteList.innerHTML = sites.map(site =>
+                        `<a href="${site.url}" class="site-link">${site.name}</a>`
+                    ).join('');
+                } else {
+                    siteList.innerHTML = '<p style="font-size: 0.85rem; opacity: 0.6;">No sites generated yet. Create your first microsite from the dashboard!</p>';
+                }
+            } catch (error) {
+                console.error('Failed to load sites:', error);
+                siteList.innerHTML = '<p style="font-size: 0.85rem; opacity: 0.6;">Unable to load sites. Please check back later.</p>';
             }
         }
 
