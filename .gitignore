@@ -1,8 +1,8 @@
 # Node modules
 node_modules/
 
-# Build artifacts (we track dist/ for GitHub Pages)
-# dist/ is INTENTIONALLY tracked - DO NOT ignore it
+# Build artifacts (sites are published to GCS, not committed)
+dist/
 
 # Temporary build directories
 .temp-*
