@@ -264,15 +264,27 @@
       padding-bottom: 12px;
       scroll-snap-type: x mandatory;
       scrollbar-width: thin;
+      scrollbar-color: rgba(59, 130, 246, 0.4) transparent;
     }
 
     .video-rail::-webkit-scrollbar {
-      height: 6px;
+      height: 8px;
+    }
+
+    .video-rail::-webkit-scrollbar-track {
+      background: transparent;
     }
 
     .video-rail::-webkit-scrollbar-thumb {
-      background: rgba(148, 163, 184, 0.35);
-      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.4);
+      border-radius: 4px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
+    .video-rail::-webkit-scrollbar-thumb:hover {
+      background: rgba(59, 130, 246, 0.6);
+      background-clip: padding-box;
     }
 
     .video-card {
