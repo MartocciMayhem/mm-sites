@@ -1,9 +1,11 @@
 {
-  "userId": "cmhk1zc0u001515eb50pzg6nq",
-  "channelId": "UCeYkoM3-cxitd1WmV0qy7Uw",
+  "fallback": true,
+  "userId": "cmhxy0ij30000ii4kj23x2bn0",
+  "channelId": "cmhxy8dq10004ii4kwtznzl4u",
   "channelExternalId": "UCeYkoM3-cxitd1WmV0qy7Uw",
   "siteSlug": "martocci-mayhem",
   "channelTitle": "Martocci Mayhem",
-  "videoCount": 202,
-  "generatedAt": "2025-11-04T07:24:54.518Z"
+  "siteName": "Look It Up",
+  "siteUrl": "https://videos.martoccimayhem.com/martocci-mayhem",
+  "generatedAt": "2025-11-13T22:41:25.119Z"
 }
