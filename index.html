@@ -2,161 +2,1471 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Martocci Mayhem Video Sites</title>
-    <meta name="description" content="Creator microsite hosting powered by GitHub Pages">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Martocci Mayhem Videos - Creator Showcase</title>
+  <meta name="description" content="Watch the newest drops from every Martocci Mayhem creator microsite.">
+  <link rel="icon" href="/images/favicon.ico">
+  <style>
+    :root {
+      --mm-bg: radial-gradient(circle at 12% 0%, rgba(59, 130, 246, 0.2), transparent 55%),
+        radial-gradient(circle at 85% 10%, rgba(147, 197, 253, 0.16), transparent 62%),
+        #04060f;
+      --mm-surface: rgba(14, 18, 32, 0.86);
+      --mm-surface-strong: rgba(22, 27, 43, 0.92);
+      --mm-border: rgba(148, 163, 184, 0.22);
+      --mm-border-soft: rgba(148, 163, 184, 0.16);
+      --mm-border-strong: rgba(148, 163, 184, 0.36);
+      --mm-text-primary: #f8fafc;
+      --mm-text-muted: #94a3b8;
+      --mm-accent: #fbbf24;
+      --mm-accent-soft: rgba(251, 191, 36, 0.18);
+      --mm-success: #22c55e;
+      --mm-warning: #facc15;
+      --mm-danger: #ef4444;
+      --mm-shadow-lg: 0 24px 44px rgba(2, 6, 23, 0.35);
+      --mm-shadow-md: 0 16px 32px rgba(15, 23, 42, 0.45);
+      --mm-radius-lg: 18px;
+      --mm-radius-md: 12px;
+      --mm-radius-sm: 8px;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            padding: 20px;
-        }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
 
-        .container {
-            text-align: center;
-            max-width: 600px;
-        }
+    body {
+      margin: 0;
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--mm-bg);
+      color: var(--mm-text-primary);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        }
+    a {
+      color: inherit;
+    }
 
-        p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
+    .hero {
+      position: relative;
+      padding: clamp(32px, 8vw, 72px) clamp(16px, 6vw, 120px) clamp(42px, 6vw, 72px);
+      border-bottom: 1px solid var(--mm-border);
+      background: linear-gradient(135deg, rgba(8, 47, 73, 0.72), rgba(17, 24, 39, 0.9));
+      overflow: hidden;
+    }
 
-        .logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 2rem;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.22), transparent 55%);
+      pointer-events: none;
+    }
 
-        .btn {
-            display: inline-block;
-            padding: 12px 32px;
-            background: white;
-            color: #667eea;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
+    .hero__inner {
+      position: relative;
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      gap: clamp(16px, 4vw, 28px);
+    }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
+    .hero__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
 
-        .sites {
-            margin-top: 3rem;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
-        }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--mm-text-primary);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
 
-        .site-link {
-            display: block;
-            padding: 12px;
-            margin: 8px 0;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: white;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
+    .brand img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.35);
+    }
 
-        .site-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--mm-border);
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mm-accent);
+      font-weight: 600;
+      width: fit-content;
+    }
 
-        .info {
-            margin-top: 2rem;
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-    </style>
+    .hero__title {
+      margin: 0;
+      font-size: clamp(2.6rem, 6vw, 4.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+    }
+
+    .hero__title span {
+      color: var(--mm-accent);
+    }
+
+    .hero__copy {
+      margin: 0;
+      max-width: 720px;
+      font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+      color: var(--mm-text-muted);
+      line-height: 1.7;
+    }
+
+    .hero__metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 8px;
+    }
+
+    .hero__metric {
+      min-width: 160px;
+      padding: 14px 18px;
+      border-radius: var(--mm-radius-md);
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--mm-border-soft);
+      display: grid;
+      gap: 4px;
+    }
+
+    .hero__metric-value {
+      font-size: 1.65rem;
+      font-weight: 700;
+    }
+
+    .hero__metric-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--mm-text-muted);
+    }
+
+    .hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 20px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .btn--primary {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #111827;
+      box-shadow: 0 16px 30px rgba(251, 191, 36, 0.35);
+    }
+
+    .btn--primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn--ghost {
+      background: rgba(15, 23, 42, 0.6);
+      border-color: var(--mm-border);
+      color: var(--mm-text-primary);
+    }
+
+    .btn--ghost:hover {
+      border-color: var(--mm-accent);
+      color: var(--mm-accent);
+    }
+
+    .btn--outline {
+      background: transparent;
+      border-color: rgba(251, 191, 36, 0.6);
+      color: var(--mm-accent);
+    }
+
+    .btn--outline:hover {
+      background: var(--mm-accent-soft);
+      color: #fefce8;
+    }
+
+    .hero__status {
+      font-size: 0.9rem;
+      color: var(--mm-text-muted);
+    }
+
+    main {
+      max-width: 1420px;
+      margin: 0 auto;
+      padding: clamp(32px, 7vw, 72px) clamp(16px, 5vw, 48px) 120px;
+      display: grid;
+      gap: clamp(48px, 7vw, 96px);
+    }
+
+    .section {
+      display: grid;
+      gap: 24px;
+    }
+
+    .section__head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .section__title {
+      margin: 0;
+      font-size: clamp(1.75rem, 4vw, 2.35rem);
+      font-weight: 700;
+      letter-spacing: -0.015em;
+    }
+
+    .section__subtitle {
+      margin: 0;
+      color: var(--mm-text-muted);
+      font-size: 1rem;
+    }
+
+    .video-rail {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(260px, 1fr);
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(59, 130, 246, 0.4) transparent;
+    }
+
+    .video-rail::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .video-rail::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .video-rail::-webkit-scrollbar-thumb {
+      background: rgba(59, 130, 246, 0.4);
+      border-radius: 4px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
+    .video-rail::-webkit-scrollbar-thumb:hover {
+      background: rgba(59, 130, 246, 0.6);
+      background-clip: padding-box;
+    }
+
+    .video-card {
+      display: flex;
+      flex-direction: column;
+      border-radius: var(--mm-radius-md);
+      background: var(--mm-surface);
+      border: 1px solid var(--mm-border-soft);
+      box-shadow: 0 12px 24px rgba(2, 6, 23, 0.28);
+      overflow: hidden;
+      text-decoration: none;
+      transition: transform 160ms ease, border-color 160ms ease;
+      scroll-snap-align: start;
+      min-height: 100%;
+    }
+
+    .video-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(251, 191, 36, 0.6);
+    }
+
+    .video-thumb {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: #020617;
+    }
+
+    .video-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 200ms ease;
+    }
+
+    .video-card:hover .video-thumb img {
+      transform: scale(1.05);
+    }
+
+    .video-body {
+      display: grid;
+      gap: 8px;
+      padding: 18px 18px 20px;
+    }
+
+    .video-channel {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mm-accent);
+      font-weight: 700;
+    }
+
+    .video-title {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .video-meta {
+      font-size: 0.82rem;
+      color: var(--mm-text-muted);
+    }
+
+    .channel-rows {
+      display: grid;
+      gap: 32px;
+    }
+
+    .channel-row {
+      background: var(--mm-surface-strong);
+      border-radius: var(--mm-radius-lg);
+      border: 1px solid var(--mm-border);
+      box-shadow: var(--mm-shadow-lg);
+      padding: clamp(20px, 4vw, 30px);
+      display: grid;
+      gap: 20px;
+    }
+
+    .channel-row__head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .channel-row__info {
+      display: grid;
+      gap: 8px;
+    }
+
+    .channel-row__info h3 {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .channel-row__meta {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--mm-text-muted);
+    }
+
+    .channel-row__status {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--mm-text-muted);
+    }
+
+    .channel-row__status.status--error {
+      color: var(--mm-danger);
+    }
+
+    .pill-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(251, 191, 36, 0.6);
+      color: var(--mm-accent);
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 160ms ease, transform 160ms ease;
+    }
+
+    .pill-link:hover {
+      background: var(--mm-accent-soft);
+      transform: translateY(-2px);
+    }
+
+    .channel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .channel-card {
+      display: grid;
+      gap: 12px;
+      padding: 22px;
+      border-radius: var(--mm-radius-md);
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--mm-border-soft);
+      text-decoration: none;
+      min-height: 200px;
+      transition: transform 160ms ease, border-color 160ms ease;
+    }
+
+    .channel-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(251, 191, 36, 0.5);
+    }
+
+    .channel-card__eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mm-accent);
+      font-weight: 600;
+    }
+
+    .channel-card__name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .channel-card__description {
+      margin: 0;
+      color: var(--mm-text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .channel-card__stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: var(--mm-text-muted);
+    }
+
+    .channel-card__status {
+      font-size: 0.82rem;
+      color: var(--mm-text-muted);
+    }
+
+    .channel-card__status.status--error {
+      color: var(--mm-danger);
+    }
+
+    .status--error {
+      color: var(--mm-danger);
+    }
+
+    .channel-card__cta {
+      margin-top: auto;
+      font-size: 0.85rem;
+      color: var(--mm-accent);
+      font-weight: 600;
+    }
+
+    .mayhem-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      padding: 6px 10px;
+      border-radius: var(--mm-radius-sm);
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(36, 197, 94, 0.14);
+      color: #4ade80;
+    }
+
+    .mayhem-badge--high {
+      background: rgba(59, 130, 246, 0.18);
+      color: #60a5fa;
+    }
+
+    .mayhem-badge--medium {
+      background: rgba(250, 204, 21, 0.18);
+      color: #facc15;
+    }
+
+    .mayhem-badge--low {
+      background: rgba(249, 115, 22, 0.18);
+      color: #fb923c;
+    }
+
+    .mayhem-badge--warning {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+    }
+
+    .empty-state,
+    .loading {
+      padding: 32px;
+      border-radius: var(--mm-radius-md);
+      text-align: center;
+      color: var(--mm-text-muted);
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px dashed var(--mm-border);
+    }
+
+    footer {
+      border-top: 1px solid var(--mm-border);
+      padding: 48px 16px;
+      text-align: center;
+      color: var(--mm-text-muted);
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: var(--mm-accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .socials {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--mm-surface);
+      border: 1px solid var(--mm-border);
+      transition: all 200ms ease;
+      text-decoration: none;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--mm-accent);
+      background: rgba(251, 191, 36, 0.1);
+    }
+
+    .social-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--mm-text-primary);
+    }
+
+    .lang-switcher {
+      position: relative;
+    }
+
+    .lang-btn {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--mm-border);
+      color: rgba(255, 255, 255, 0.9);
+      padding: 10px 14px;
+      border-radius: var(--mm-radius-sm);
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: 160ms ease;
+      box-shadow: var(--mm-shadow-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .lang-btn:hover {
+      background: rgba(251, 191, 36, 0.1);
+      border-color: var(--mm-accent);
+    }
+
+    .lang-panel {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid var(--mm-border);
+      border-radius: var(--mm-radius-md);
+      padding: 16px;
+      min-width: 220px;
+      box-shadow: var(--mm-shadow-lg);
+      z-index: 9999;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .lang-panel__heading {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .lang-panel__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .lang-panel__list li {
+      margin-bottom: 6px;
+    }
+
+    .lang-option {
+      width: 100%;
+      background: transparent;
+      border: 0;
+      text-align: left;
+      padding: 8px 10px;
+      border-radius: var(--mm-radius-sm);
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.9);
+      transition: background 140ms ease;
+    }
+
+    .lang-option:hover,
+    .lang-option.active {
+      background: rgba(251, 191, 36, 0.12);
+      color: var(--mm-accent);
+    }
+
+    @media (max-width: 1024px) {
+      .video-rail {
+        grid-auto-columns: minmax(220px, 70%);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero__metrics {
+        gap: 12px;
+      }
+
+      .hero__metric {
+        min-width: 140px;
+      }
+
+      .channel-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero__inner {
+        text-align: center;
+      }
+
+      .hero__top {
+        justify-content: center;
+      }
+
+      .hero__actions {
+        justify-content: center;
+      }
+
+      .channel-row__head {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .channel-row__info {
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="logo">📺</div>
-        <h1>Martocci Mayhem</h1>
-        <p>Creator microsite hosting powered by GitHub Pages</p>
-        <a href="https://martoccimayhem.com" class="btn">Go to Dashboard</a>
-
-        <div class="sites">
-            <h2 style="margin-bottom: 1rem;">Active Microsites</h2>
-            <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem;">Generated channel microsites appear here
-            </p>
-
-            <!-- Example sites (will be populated dynamically) -->
-            <div id="site-list">
-                <p style="font-size: 0.85rem; opacity: 0.6;">No sites generated yet. Create your first microsite from
-                    the dashboard!</p>
-            </div>
+  <header class="hero">
+    <div class="hero__inner">
+      <div class="hero__top">
+        <a class="brand" href="https://martoccimayhem.com" target="_blank" rel="noopener">
+          <img src="/images/JasonMartocciLogo.webp" alt="Martocci Mayhem logo">
+          <span>Martocci Mayhem</span>
+        </a>
+        <div class="lang-switcher" id="lang-switcher">
+          <button type="button" class="lang-btn" id="lang-btn" aria-label="Choose language" title="Language">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+              </path>
+            </svg>
+          </button>
+          <div class="lang-panel" id="lang-panel" style="display: none;">
+            <strong class="lang-panel__heading">Choose language</strong>
+            <ul class="lang-panel__list">
+              <li><button type="button" class="lang-option" data-lang="en">English</button></li>
+              <li><button type="button" class="lang-option" data-lang="es">Español</button></li>
+              <li><button type="button" class="lang-option" data-lang="pt">Português</button></li>
+              <li><button type="button" class="lang-option" data-lang="hi">हिन्दी</button></li>
+              <li><button type="button" class="lang-option" data-lang="ru">Русский</button></li>
+              <li><button type="button" class="lang-option" data-lang="ja">日本語</button></li>
+              <li><button type="button" class="lang-option" data-lang="ko">한국어</button></li>
+              <li><button type="button" class="lang-option" data-lang="de">Deutsch</button></li>
+              <li><button type="button" class="lang-option" data-lang="fr">Français</button></li>
+              <li><button type="button" class="lang-option" data-lang="ar">العربية</button></li>
+              <li><button type="button" class="lang-option" data-lang="id">Indonesia</button></li>
+              <li><button type="button" class="lang-option" data-lang="tr">Türkçe</button></li>
+            </ul>
+          </div>
         </div>
+      </div>
 
-        <div class="info">
-            <p>Static microsites for YouTube creators • Fast • SEO-friendly • Self-hosted</p>
+      <span class="hero__badge" data-i18n="hero_badge">Martocci Mayhem Network</span>
+      <h1 class="hero__title" data-i18n="hero_title">Your Hub for <span>Creator Microsites</span></h1>
+      <p class="hero__copy" data-i18n="hero_copy">Dive into a curated showroom of every Martocci Mayhem channel. Stream
+        the latest videos, uncover fan favorites, and subscribe to your next obsession.</p>
+
+      <div class="hero__metrics">
+        <div class="hero__metric">
+          <span class="hero__metric-value" id="metric-channels">--</span>
+          <span class="hero__metric-label" data-i18n="metric_channels">Channels</span>
         </div>
+        <div class="hero__metric">
+          <span class="hero__metric-value" id="metric-videos">--</span>
+          <span class="hero__metric-label" data-i18n="metric_videos">Videos tracked</span>
+        </div>
+        <div class="hero__metric">
+          <span class="hero__metric-value" id="metric-views">--</span>
+          <span class="hero__metric-label" data-i18n="metric_views">Lifetime views</span>
+        </div>
+        <div class="hero__metric">
+          <span class="hero__metric-value" id="metric-refresh">--</span>
+          <span class="hero__metric-label" data-i18n="metric_refresh">Last refresh</span>
+        </div>
+      </div>
+
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="https://martoccimayhem.com" target="_blank" rel="noopener"
+          data-i18n="cta_dashboard">Creator dashboard</a>
+        <a class="btn btn--ghost" href="#channel-directory" data-i18n="cta_browse">Browse channels</a>
+        <a class="btn btn--outline" href="/admin/microsites" data-i18n="cta_admin">Admin microsites</a>
+      </div>
+
+      <div class="hero__status" id="hero-status">Loading network insights...</div>
     </div>
+  </header>
 
-    <script>
-        // Auto-discover microsites from manifest
-        async function loadSites() {
-            const siteList = document.getElementById('site-list');
+  <main>
+    <section class="section" id="latest-premieres">
+      <div class="section__head">
+        <h2 class="section__title" data-i18n="latest_premieres_title">Latest Premieres</h2>
+        <p class="section__subtitle" data-i18n="latest_premieres_subtitle">Fresh uploads across the entire network.</p>
+      </div>
+      <div class="video-rail" id="latest-premieres-rail">
+        <div class="loading" data-i18n="loading_latest">Loading latest videos...</div>
+      </div>
+    </section>
 
-            try {
-                // Fetch the auto-generated manifest
-                const response = await fetch('/sites-manifest.json');
-                if (!response.ok) {
-                    throw new Error('Manifest not found');
-                }
+    <section class="section" id="top-viewed">
+      <div class="section__head">
+        <h2 class="section__title" data-i18n="top_viewed_title">Top Viewed</h2>
+        <p class="section__subtitle" data-i18n="top_viewed_subtitle">The most-watched drops from every microsite.</p>
+      </div>
+      <div class="video-rail" id="top-viewed-rail">
+        <div class="loading" data-i18n="loading_top_viewed">Crunching view counts...</div>
+      </div>
+    </section>
 
-                const data = await response.json();
-                const sites = data.sites || [];
+    <section class="section" id="fan-favorites">
+      <div class="section__head">
+        <h2 class="section__title" data-i18n="fan_favorites_title">Fan Favorites</h2>
+        <p class="section__subtitle" data-i18n="fan_favorites_subtitle">Videos earning the most love right now.</p>
+      </div>
+      <div class="video-rail" id="fan-favorites-rail">
+        <div class="loading" data-i18n="loading_fan_favorites">Collecting reactions...</div>
+      </div>
+    </section>
 
-                if (sites.length > 0) {
-                    siteList.innerHTML = sites.map(site =>
-                        `<a href="${site.url}" class="site-link">${site.name}</a>`
-                    ).join('');
-                } else {
-                    siteList.innerHTML = '<p style="font-size: 0.85rem; opacity: 0.6;">No sites generated yet. Create your first microsite from the dashboard!</p>';
-                }
-            } catch (error) {
-                console.error('Failed to load sites:', error);
-                siteList.innerHTML = '<p style="font-size: 0.85rem; opacity: 0.6;">Unable to load sites. Please check back later.</p>';
-            }
+    <section class="section" id="highest-mayhem">
+      <div class="section__head">
+        <h2 class="section__title" data-i18n="mayhem_makers_title">Highest Mayhem Makers</h2>
+        <p class="section__subtitle" data-i18n="mayhem_makers_subtitle">Top channels ranked by Mayhem Level and
+          momentum.</p>
+      </div>
+      <div class="channel-rows" id="highest-mayhem-rows">
+        <div class="loading" data-i18n="loading_mayhem">Ranking mayhem makers...</div>
+      </div>
+    </section>
+
+    <section class="section" id="newest-channels">
+      <div class="section__head">
+        <h2 class="section__title" data-i18n="newest_channels_title">Newest Channels</h2>
+        <p class="section__subtitle" data-i18n="newest_channels_subtitle">Fresh launches and their top-performing
+          videos.</p>
+      </div>
+      <div class="channel-rows" id="newest-channels-rows">
+        <div class="loading" data-i18n="loading_newest">Tracking newest creators...</div>
+      </div>
+    </section>
+
+    <section class="section" id="channel-directory">
+      <div class="section__head">
+        <h2 class="section__title" data-i18n="directory_title">Explore All Microsites</h2>
+        <p class="section__subtitle" data-i18n="directory_subtitle">Operational status and performance snapshots for
+          every launch.</p>
+      </div>
+      <div class="channel-grid">
+                <a class="channel-card" data-slug="martocci-mayhem" href="/martocci-mayhem/index.html">
+          <span class="channel-card__eyebrow" data-role="category">Microsite</span>
+          <span class="channel-card__name">Martocci Mayhem</span>
+          <p class="channel-card__description" data-role="description">Loading channel metrics...</p>
+          <div class="channel-card__stats">
+            <span class="channel-card__stat" data-role="videos">-- videos</span>
+            <span class="channel-card__stat" data-role="views">-- views</span>
+          </div>
+          <div class="channel-card__status" data-role="status">Checking status...</div>
+          <span class="channel-card__cta">View channel -></span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div><span data-i18n="footer_copyright">©</span> 2025 <a href="https://martoccimayhem.com"
+          target="_blank" rel="noopener">Martocci Mayhem</a> · <span data-i18n="footer_rights">All rights
+          reserved.</span></div>
+      <nav class="socials" aria-label="Social links">
+        <a class="social-btn" href="https://x.com/MartocciMayhem" target="_blank" rel="noopener noreferrer"
+          aria-label="X (Twitter)" title="X (Twitter)">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 3h5l4 7 5-7h4l-7 9 7 9h-5l-4-7-5 7H3l7-9z"></path>
+          </svg>
+        </a>
+        <a class="social-btn" href="https://www.tiktok.com/@MartocciMayhem" target="_blank" rel="noopener noreferrer"
+          aria-label="TikTok" title="TikTok">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M21 8.13a5.05 5.05 0 0 1-3-.95v6.34a6.48 6.48 0 1 1-5.51-6.41v3.47a3.05 3.05 0 1 0 2.2 2.94V2h3.31A5.06 5.06 0 0 0 21 5.05Z" />
+          </svg>
+        </a>
+        <a class="social-btn" href="https://www.youtube.com/@MartocciMayhem" target="_blank" rel="noopener noreferrer"
+          aria-label="YouTube" title="YouTube">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-1C16.6 4.6 12 4.6 12 4.6h0s-4.6 0-7 .4c-.4 0-1.2.2-2 1-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.6C2 14.4 2.2 16 2.2 16s.2 1.4.8 2c.8.8 1.8.8 2.2 1 1.6.2 6.8.4 6.8.4s4.6 0 7-.4c.4 0 1.2-.2 2-1 .6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.6C22 9.6 21.8 8 21.8 8Zm-12 6.4V8.8l6 2.8Z" />
+          </svg>
+        </a>
+        <a class="social-btn" href="https://www.instagram.com/MartocciMayhem" target="_blank" rel="noopener noreferrer"
+          aria-label="Instagram" title="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5ZM17.5 6a1 1 0 1 1-1-1 1 1 0 0 1 1 1Z" />
+          </svg>
+        </a>
+        <a class="social-btn" href="https://www.facebook.com/MartocciMayhem" target="_blank" rel="noopener noreferrer"
+          aria-label="Facebook" title="Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M13 10h3l-.4 3H13v9h-3v-9H7v-3h3V7.5C10 5 11.2 3 14.7 3c1.2 0 2 .1 2.3.1v2.7h-1.6c-1.3 0-1.4.5-1.4 1.4Z" />
+          </svg>
+        </a>
+        <a class="social-btn" href="https://www.linkedin.com/company/MartocciMayhem" target="_blank"
+          rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3.5 8.98h2.96V21H3.5zM9 8.98h2.84v1.63h.04c.4-.75 1.38-1.54 2.84-1.54 3.03 0 3.59 1.99 3.59 4.57V21h-2.96v-4.92c0-1.17-.02-2.67-1.63-2.67-1.63 0-1.88 1.27-1.88 2.58V21H9z" />
+          </svg>
+        </a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const CHANNELS = [{"slug":"martocci-mayhem","name":"Martocci Mayhem","description":"Loading channel metrics...","createdAt":"2025-11-13T21:36:31.609Z","siteGeneratedAt":"2025-11-13T22:41:25.743Z","siteGenerationError":"Microsite generated with fallback content","siteGenerated":false,"metaSummary":{"mayhemLevel":null,"mayhemScore":null,"totalViews":null,"totalVideos":0,"lastRefresh":null}}];
+      const LIMITS = {
+        latest: 15,
+        topViewed: 15,
+        fanFavorites: 15,
+        mayhemChannels: 3,
+        newestChannels: 3,
+        channelVideoLimit: 10,
+      };
+
+      const state = {
+        channels: [],
+        allVideos: [],
+        lastRefresh: null,
+      };
+
+      const channelCardMap = new Map();
+      document.querySelectorAll('.channel-card').forEach(card => {
+        const slug = card.getAttribute('data-slug');
+        if (slug) channelCardMap.set(slug, card);
+      });
+
+      const heroMetricChannels = document.getElementById('metric-channels');
+      const heroMetricVideos = document.getElementById('metric-videos');
+      const heroMetricViews = document.getElementById('metric-views');
+      const heroMetricRefresh = document.getElementById('metric-refresh');
+      const heroStatus = document.getElementById('hero-status');
+
+      const latestRail = document.getElementById('latest-premieres-rail');
+      const topViewedRail = document.getElementById('top-viewed-rail');
+      const fanFavoritesRail = document.getElementById('fan-favorites-rail');
+      const mayhemRows = document.getElementById('highest-mayhem-rows');
+      const newestRows = document.getElementById('newest-channels-rows');
+
+      const now = Date.now();
+
+      function formatNumber(num) {
+        const value = Number(num) || 0;
+        if (value >= 1000000) return (value / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+        if (value >= 1000) return (value / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+        return value.toLocaleString();
+      }
+
+      function parseDate(value) {
+        if (!value) return null;
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? null : date;
+      }
+
+      function formatDateDisplay(date) {
+        if (!date) return '--';
+        return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+      }
+
+      function formatRelative(date) {
+        if (!date) return 'Unknown';
+        const diff = Date.now() - date.getTime();
+        const minute = 60000;
+        const hour = 3600000;
+        const day = 86400000;
+        if (diff < minute) return 'Just now';
+        if (diff < hour) {
+          const mins = Math.round(diff / minute);
+          return mins + 'm ago';
+        }
+        if (diff < day) {
+          const hrs = Math.round(diff / hour);
+          return hrs + 'h ago';
+        }
+        const days = Math.round(diff / day);
+        return days + 'd ago';
+      }
+
+      function dominantCategory(videos) {
+        const counts = new Map();
+        videos.forEach(video => {
+          const category = video.category || 'General';
+          counts.set(category, (counts.get(category) || 0) + 1);
+        });
+        let top = 'Microsite';
+        let max = 0;
+        counts.forEach((count, category) => {
+          if (count > max) {
+            max = count;
+            top = category;
+          }
+        });
+        return top;
+      }
+
+      function normalizeMetric(value, max) {
+        if (!max) return 0;
+        return Math.max(0, Math.min(1, value / max));
+      }
+
+      function computeMayhemScore(metrics, maxima, metaSummary) {
+        if (metaSummary && typeof metaSummary === 'object') {
+          const lvl = metaSummary.mayhemLevel;
+          const score = metaSummary.mayhemScore;
+          if (typeof score === 'number' && score >= 0) {
+            return { score: Math.max(0, Math.min(100, score)), label: lvl || null };
+          }
         }
 
-        loadSites();
-    </script>
+        const recentNorm = normalizeMetric(metrics.recentViews, maxima.recentViews);
+        const totalViewsNorm = normalizeMetric(metrics.totalViews, maxima.totalViews);
+        const likeNorm = normalizeMetric(metrics.totalLikes, maxima.totalLikes);
+        const velocityNorm = normalizeMetric(metrics.recentUploads, maxima.recentUploads);
+
+        const composite = (recentNorm * 0.4 + totalViewsNorm * 0.3 + likeNorm * 0.2 + velocityNorm * 0.1) * 100;
+        return { score: Math.round(composite), label: null };
+      }
+
+      function scoreToBadge(score, label) {
+        if (label && typeof label === 'string') {
+          const normalized = label.toLowerCase();
+          if (normalized.includes('very')) return { letter: 'A', text: 'Very high', className: 'mayhem-badge', slug: 'very-high' };
+          if (normalized.includes('high')) return { letter: 'B', text: 'High', className: 'mayhem-badge mayhem-badge--high', slug: 'high' };
+          if (normalized.includes('medium')) return { letter: 'C', text: 'Medium', className: 'mayhem-badge mayhem-badge--medium', slug: 'medium' };
+          if (normalized.includes('low')) return { letter: 'D', text: 'Low', className: 'mayhem-badge mayhem-badge--low', slug: 'low' };
+        }
+
+        if (score >= 85) return { letter: 'A', text: 'Very high', className: 'mayhem-badge', slug: 'very-high' };
+        if (score >= 70) return { letter: 'B', text: 'High', className: 'mayhem-badge mayhem-badge--high', slug: 'high' };
+        if (score >= 55) return { letter: 'C', text: 'Medium', className: 'mayhem-badge mayhem-badge--medium', slug: 'medium' };
+        if (score >= 40) return { letter: 'D', text: 'Low', className: 'mayhem-badge mayhem-badge--low', slug: 'low' };
+        return { letter: 'F', text: 'Needs love', className: 'mayhem-badge mayhem-badge--warning', slug: 'warning' };
+      }
+
+      function updateChannelCard(channel) {
+        const card = channelCardMap.get(channel.slug);
+        if (!card) return;
+
+        const categoryEl = card.querySelector('[data-role="category"]');
+        if (categoryEl) categoryEl.textContent = channel.topCategory || 'Microsite';
+
+        const descriptionEl = card.querySelector('[data-role="description"]');
+        if (descriptionEl) {
+          const lines = [];
+          lines.push('Total videos ' + formatNumber(channel.metrics.videoCount));
+          lines.push('Lifetime views ' + formatNumber(channel.metrics.totalViews));
+          if (channel.metrics.totalLikes) lines.push('Likes ' + formatNumber(channel.metrics.totalLikes));
+          descriptionEl.textContent = lines.join(' · ');
+        }
+
+        const videosEl = card.querySelector('[data-role="videos"]');
+        if (videosEl) videosEl.textContent = formatNumber(channel.metrics.videoCount) + ' videos';
+
+        const viewsEl = card.querySelector('[data-role="views"]');
+        if (viewsEl) viewsEl.textContent = formatNumber(channel.metrics.totalViews) + ' views';
+
+        const statusEl = card.querySelector('[data-role="status"]');
+        if (statusEl) {
+          if (channel.status === 'ok') {
+            const refreshText = channel.lastRefresh ? 'Updated ' + formatRelative(channel.lastRefresh) : 'Up to date';
+            statusEl.textContent = refreshText;
+            statusEl.classList.remove('status--error');
+          } else {
+            statusEl.textContent = 'Status: Broken';
+            statusEl.classList.add('status--error');
+            if (channel.error) statusEl.setAttribute('title', channel.error);
+          }
+        }
+      }
+
+      function createVideoCard(video) {
+        const link = document.createElement('a');
+        link.className = 'video-card';
+        link.href = '/' + video.channelSlug + '/videos/' + video.slug + '.html';
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.setAttribute('aria-label', video.title + ' by ' + video.channelName);
+
+        const thumbWrap = document.createElement('div');
+        thumbWrap.className = 'video-thumb';
+        const img = document.createElement('img');
+        img.src = 'https://i.ytimg.com/vi/' + video.videoId + '/hqdefault.jpg';
+        img.width = 320;
+        img.height = 180;
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        img.alt = video.title;
+        img.onerror = function () {
+          this.onerror = null;
+          this.src = '/images/default-thumbnail.png';
+        };
+        thumbWrap.appendChild(img);
+
+        const body = document.createElement('div');
+        body.className = 'video-body';
+
+        const channel = document.createElement('span');
+        channel.className = 'video-channel';
+        channel.textContent = video.channelName;
+
+        const title = document.createElement('h3');
+        title.className = 'video-title';
+        title.textContent = video.title;
+
+        const meta = document.createElement('div');
+        meta.className = 'video-meta';
+        const parts = [formatNumber(video.viewCount) + ' views'];
+        if (video.likeCount) parts.push(formatNumber(video.likeCount) + ' likes');
+        if (video.publishedAt) parts.push(formatRelative(video.publishedAt));
+        meta.textContent = parts.join(' • ');
+
+        body.append(channel, title, meta);
+        link.append(thumbWrap, body);
+        return link;
+      }
+
+      function renderVideoRail(container, videos, emptyMessage) {
+        if (!container) return;
+        container.textContent = '';
+        if (!videos.length) {
+          const empty = document.createElement('div');
+          empty.className = 'empty-state';
+          empty.textContent = emptyMessage;
+          container.appendChild(empty);
+          return;
+        }
+        videos.forEach(video => container.appendChild(createVideoCard(video)));
+      }
+
+      function renderChannelSection(container, channels, emptyMessage) {
+        if (!container) return;
+        container.textContent = '';
+        if (!channels.length) {
+          const empty = document.createElement('div');
+          empty.className = 'empty-state';
+          empty.textContent = emptyMessage;
+          container.appendChild(empty);
+          return;
+        }
+
+        channels.forEach(channel => {
+          const section = document.createElement('section');
+          section.className = 'channel-row';
+          section.setAttribute('data-slug', channel.slug);
+
+          const head = document.createElement('div');
+          head.className = 'channel-row__head';
+
+          const info = document.createElement('div');
+          info.className = 'channel-row__info';
+
+          const title = document.createElement('h3');
+          title.textContent = channel.name;
+
+          const mayhemMeta = document.createElement('p');
+          mayhemMeta.className = 'channel-row__meta';
+
+          const badge = document.createElement('span');
+          badge.className = channel.badge.className;
+          badge.textContent = channel.badge.letter;
+
+          const badgeText = document.createElement('span');
+          badgeText.textContent = ' ' + channel.badge.text + ' · Score ' + channel.metrics.mayhemScore;
+
+          mayhemMeta.append(badge, badgeText);
+
+          const statsText = document.createElement('span');
+          statsText.textContent = ' · ' + formatNumber(channel.metrics.videoCount) + ' videos · ' + formatNumber(channel.metrics.totalViews) + ' views';
+          mayhemMeta.appendChild(statsText);
+
+          if (channel.metrics.totalLikes) {
+            const likesText = document.createElement('span');
+            likesText.textContent = ' · ' + formatNumber(channel.metrics.totalLikes) + ' likes';
+            mayhemMeta.appendChild(likesText);
+          }
+
+          const status = document.createElement('p');
+          status.className = 'channel-row__status' + (channel.status === 'ok' ? '' : ' status--error');
+          const statusParts = [];
+          if (channel.createdAt) statusParts.push('Launched ' + formatDateDisplay(channel.createdAt));
+          if (channel.status === 'ok') {
+            statusParts.push('Last refresh ' + (channel.lastRefresh ? formatRelative(channel.lastRefresh) : 'Unknown'));
+          } else {
+            statusParts.push('Status: ' + (channel.error || 'Broken'));
+          }
+          status.textContent = statusParts.join(' · ');
+
+          info.append(title, mayhemMeta, status);
+
+          const link = document.createElement('a');
+          link.className = 'pill-link';
+          link.href = '/' + channel.slug + '/index.html';
+          link.textContent = 'View microsite';
+          link.target = '_blank';
+          link.rel = 'noopener';
+
+          head.append(info, link);
+
+          const rail = document.createElement('div');
+          rail.className = 'video-rail';
+          if (!channel.topVideos.length) {
+            const empty = document.createElement('div');
+            empty.className = 'empty-state';
+            empty.textContent = 'No videos yet.';
+            rail.appendChild(empty);
+          } else {
+            channel.topVideos.forEach(video => rail.appendChild(createVideoCard(video)));
+          }
+
+          section.append(head, rail);
+          container.appendChild(section);
+        });
+      }
+
+      async function loadChannel(channelInfo) {
+        const result = {
+          slug: channelInfo.slug,
+          name: channelInfo.name,
+          createdAt: parseDate(channelInfo.createdAt),
+          siteGeneratedAt: parseDate(channelInfo.siteGeneratedAt),
+          siteGenerationError: channelInfo.siteGenerationError || null,
+          siteGenerated: Boolean(channelInfo.siteGenerated),
+          metaSummary: channelInfo.metaSummary || null,
+          videos: [],
+          metrics: {
+            videoCount: 0,
+            totalViews: 0,
+            totalLikes: 0,
+            recentViews: 0,
+            recentUploads: 0,
+            latestPublished: null,
+            mayhemScore: 0,
+          },
+          topCategory: 'Microsite',
+          status: 'pending',
+          lastRefresh: null,
+          error: null,
+          badge: { letter: 'C', text: 'Medium', className: 'mayhem-badge', slug: 'medium' },
+          topVideos: [],
+        };
+
+        const THIRTY_DAYS = 30 * 86400000;
+
+        if (result.metaSummary && result.metaSummary.lastRefresh && !result.lastRefresh) {
+          const metaRefresh = parseDate(result.metaSummary.lastRefresh);
+          if (metaRefresh) result.lastRefresh = metaRefresh;
+        }
+
+        async function fetchJson(url) {
+          const response = await fetch(url, { cache: 'no-store' });
+          if (!response.ok) throw new Error('HTTP ' + response.status);
+          return response.json();
+        }
+
+        try {
+          const videos = await fetchJson('/' + channelInfo.slug + '/videos.json');
+          if (Array.isArray(videos)) {
+            result.videos = videos.map(raw => {
+              const published = parseDate(raw.published_at || raw.publishedAt || raw.upload_date || raw.creation_date || raw.last_edited_date);
+              const edited = parseDate(raw.last_edited_date || raw.published_at || raw.publishedAt || raw.upload_date || raw.creation_date);
+              const record = {
+                videoId: raw.video_id,
+                slug: raw.slug,
+                title: raw.title || 'Untitled video',
+                viewCount: Number(raw.view_count) || 0,
+                likeCount: Number(raw.like_count) || 0,
+                category: raw.category || 'General',
+                channelName: channelInfo.name,
+                channelSlug: channelInfo.slug,
+                publishedAt: published,
+                lastEditedAt: edited,
+              };
+              return record;
+            }).filter(item => item.videoId && item.slug);
+
+            result.metrics.videoCount = result.videos.length;
+            result.metrics.totalViews = result.videos.reduce((sum, v) => sum + v.viewCount, 0);
+            result.metrics.totalLikes = result.videos.reduce((sum, v) => sum + v.likeCount, 0);
+            const cutoff = Date.now() - THIRTY_DAYS;
+            result.metrics.recentViews = result.videos.reduce((sum, v) => sum + (v.lastEditedAt && v.lastEditedAt.getTime() >= cutoff ? v.viewCount : 0), 0);
+            result.metrics.recentUploads = result.videos.filter(v => v.publishedAt && v.publishedAt.getTime() >= cutoff).length;
+            result.metrics.latestPublished = result.videos.reduce((latest, v) => {
+              const ts = v.publishedAt ? v.publishedAt.getTime() : (v.lastEditedAt ? v.lastEditedAt.getTime() : 0);
+              if (!latest || ts > latest) return ts;
+              return latest;
+            }, null);
+            result.topCategory = dominantCategory(result.videos);
+            result.status = 'ok';
+
+            if (result.metrics.latestPublished) {
+              const latestDate = new Date(result.metrics.latestPublished);
+              if (!state.lastRefresh || latestDate > state.lastRefresh) state.lastRefresh = latestDate;
+            }
+          } else {
+            result.status = 'error';
+            result.error = 'Invalid videos.json';
+          }
+        } catch (error) {
+          result.status = 'error';
+          result.error = error instanceof Error ? error.message : 'Unable to load videos.json';
+        }
+
+        try {
+          const meta = await fetchJson('/' + channelInfo.slug + '/meta.json');
+          if (meta && typeof meta === 'object' && meta.generatedAt) {
+            const generated = parseDate(meta.generatedAt);
+            if (generated) result.lastRefresh = generated;
+          }
+        } catch (error) {
+          if (!result.lastRefresh) result.lastRefresh = result.siteGeneratedAt || null;
+
+          if (result.metrics.videoCount === 0 && result.metaSummary && typeof result.metaSummary.totalVideos === 'number') {
+            result.metrics.videoCount = result.metaSummary.totalVideos;
+          }
+
+          if (result.metrics.totalViews === 0 && result.metaSummary && typeof result.metaSummary.totalViews === 'number') {
+            result.metrics.totalViews = result.metaSummary.totalViews;
+          }
+        }
+
+        if (!result.lastRefresh) result.lastRefresh = result.siteGeneratedAt || null;
+
+        updateChannelCard(result);
+        state.channels.push(result);
+        if (result.status === 'ok') {
+          result.videos.forEach(video => state.allVideos.push(video));
+        }
+      }
+
+      function finalizeMetrics() {
+        const validChannels = state.channels.filter(channel => channel.status === 'ok' && channel.metrics.videoCount > 0);
+        if (!validChannels.length) return;
+
+        const maxima = {
+          totalViews: Math.max(...validChannels.map(c => c.metrics.totalViews), 0),
+          recentViews: Math.max(...validChannels.map(c => c.metrics.recentViews), 0),
+          totalLikes: Math.max(...validChannels.map(c => c.metrics.totalLikes), 0),
+          recentUploads: Math.max(...validChannels.map(c => c.metrics.recentUploads), 0),
+        };
+
+        validChannels.forEach(channel => {
+          const mayhem = computeMayhemScore(channel.metrics, maxima, channel.metaSummary);
+          channel.metrics.mayhemScore = Math.round(mayhem.score);
+          channel.badge = scoreToBadge(channel.metrics.mayhemScore, mayhem.label);
+          channel.topVideos = channel.videos
+            .slice()
+            .sort((a, b) => b.viewCount - a.viewCount)
+            .slice(0, LIMITS.channelVideoLimit);
+        });
+      }
+
+      function renderGlobalSections() {
+        const videosWithDates = state.allVideos
+          .filter(video => video.publishedAt || video.lastEditedAt);
+
+        const latest = videosWithDates
+          .slice()
+          .sort((a, b) => {
+            const aTime = a.publishedAt ? a.publishedAt.getTime() : (a.lastEditedAt ? a.lastEditedAt.getTime() : 0);
+            const bTime = b.publishedAt ? b.publishedAt.getTime() : (b.lastEditedAt ? b.lastEditedAt.getTime() : 0);
+            return bTime - aTime;
+          })
+          .slice(0, LIMITS.latest);
+
+        const topViewed = state.allVideos
+          .slice()
+          .sort((a, b) => b.viewCount - a.viewCount)
+          .slice(0, LIMITS.topViewed);
+
+        const fanFavorites = state.allVideos
+          .slice()
+          .sort((a, b) => b.likeCount - a.likeCount)
+          .slice(0, LIMITS.fanFavorites);
+
+        renderVideoRail(latestRail, latest, 'No recent uploads yet.');
+        renderVideoRail(topViewedRail, topViewed, 'No view data yet.');
+        renderVideoRail(fanFavoritesRail, fanFavorites, 'No likes yet.');
+      }
+
+      function renderChannelSections() {
+        const readyChannels = state.channels.filter(channel => channel.metrics.videoCount > 0);
+
+        const mayhemTop = readyChannels
+          .slice()
+          .sort((a, b) => b.metrics.mayhemScore - a.metrics.mayhemScore)
+          .slice(0, LIMITS.mayhemChannels);
+
+        const newest = readyChannels
+          .slice()
+          .sort((a, b) => {
+            const aDate = a.createdAt ? a.createdAt.getTime() : (a.metrics.latestPublished || 0);
+            const bDate = b.createdAt ? b.createdAt.getTime() : (b.metrics.latestPublished || 0);
+            return bDate - aDate;
+          })
+          .slice(0, LIMITS.newestChannels);
+
+        renderChannelSection(mayhemRows, mayhemTop, 'No mayhem rankings yet.');
+        renderChannelSection(newestRows, newest, 'No new channels yet.');
+      }
+
+      function updateHeroStats() {
+        if (heroMetricChannels) heroMetricChannels.textContent = state.channels.length.toLocaleString();
+        const totalVideos = state.channels.reduce((sum, channel) => sum + channel.metrics.videoCount, 0);
+        const totalViews = state.channels.reduce((sum, channel) => sum + channel.metrics.totalViews, 0);
+        if (heroMetricVideos) heroMetricVideos.textContent = totalVideos.toLocaleString();
+        if (heroMetricViews) heroMetricViews.textContent = formatNumber(totalViews);
+        const latest = state.lastRefresh || (state.channels.reduce((best, channel) => {
+          if (channel.lastRefresh && (!best || channel.lastRefresh > best)) return channel.lastRefresh;
+          return best;
+        }, null));
+        if (heroMetricRefresh) heroMetricRefresh.textContent = latest ? formatRelative(latest) : '--';
+
+        if (heroStatus) {
+          const broken = state.channels.filter(channel => channel.status !== 'ok');
+          if (broken.length) {
+            heroStatus.textContent = broken.length + ' microsite(s) require attention.';
+            heroStatus.classList.add('status--error');
+          } else {
+            heroStatus.textContent = 'All microsites synchronized.';
+            heroStatus.classList.remove('status--error');
+          }
+        }
+      }
+
+      async function hydrate() {
+        for (const channel of CHANNELS) {
+          const card = channelCardMap.get(channel.slug);
+          if (card) {
+            const statusEl = card.querySelector('[data-role="status"]');
+            if (statusEl) statusEl.textContent = 'Loading...';
+          }
+        }
+
+        await Promise.all(CHANNELS.map(loadChannel));
+
+        finalizeMetrics();
+        renderGlobalSections();
+        renderChannelSections();
+        updateHeroStats();
+      }
+
+      hydrate().catch(error => {
+        console.error('Failed to hydrate microsite portal:', error);
+        if (heroStatus) heroStatus.textContent = 'Unable to load microsite data.';
+      });
+    })();
+  </script>
+
+  <!-- Language switcher handled by i18n.js -->
+  <script src="/assets/i18n.js" defer></script>
 </body>
 
 </html>
