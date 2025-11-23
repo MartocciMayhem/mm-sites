@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Deployment Management - Martocci Mayhem</title>
+  <meta name="description" content="Monitor and manage microsite deployments.">
+  <link rel="icon" href="/images/favicon.ico">
+  <style>
+    :root {
+      --mm-bg: radial-gradient(circle at 12% 0%, rgba(59, 130, 246, 0.2), transparent 55%),
+        radial-gradient(circle at 85% 10%, rgba(147, 197, 253, 0.16), transparent 62%),
+        #04060f;
+      --mm-surface: rgba(14, 18, 32, 0.86);
+      --mm-surface-strong: rgba(22, 27, 43, 0.92);
+      --mm-border: rgba(148, 163, 184, 0.22);
+      --mm-border-soft: rgba(148, 163, 184, 0.16);
+      --mm-border-strong: rgba(148, 163, 184, 0.36);
+      --mm-text-primary: #f8fafc;
+      --mm-text-muted: #94a3b8;
+      --mm-accent: #fbbf24;
+      --mm-accent-soft: rgba(251, 191, 36, 0.18);
+      --mm-success: #22c55e;
+      --mm-warning: #facc15;
+      --mm-danger: #ef4444;
+      --mm-info: #3b82f6;
+      --mm-shadow-lg: 0 24px 44px rgba(2, 6, 23, 0.35);
+      --mm-shadow-md: 0 16px 32px rgba(15, 23, 42, 0.45);
+      --mm-radius-lg: 18px;
+      --mm-radius-md: 12px;
+      --mm-radius-sm: 8px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--mm-bg);
+      color: var(--mm-text-primary);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .admin-container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .admin-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--mm-border);
+    }
+
+    .admin-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .admin-title {
+      margin: 0;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .admin-title .accent {
+      color: var(--mm-accent);
+    }
+
+    .admin-nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.625rem 1.25rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 160ms ease;
+      background: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #111827;
+      box-shadow: 0 4px 12px rgba(251, 191, 36, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.45);
+    }
+
+    .btn-secondary {
+      background: rgba(15, 23, 42, 0.6);
+      border-color: var(--mm-border);
+      color: var(--mm-text-primary);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--mm-accent);
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: rgba(251, 191, 36, 0.6);
+      color: var(--mm-accent);
+    }
+
+    .btn-outline:hover {
+      background: var(--mm-accent-soft);
+    }
+
+    .btn-success {
+      background: var(--mm-success);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--mm-danger);
+      color: white;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .deployment-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 1200px) {
+      .deployment-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      padding: 1.5rem;
+      border-radius: var(--mm-radius-lg);
+      background: var(--mm-surface);
+      border: 1px solid var(--mm-border-soft);
+      box-shadow: var(--mm-shadow-md);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--mm-border-soft);
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .panel-badge {
+      padding: 0.375rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-success {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--mm-success);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .badge-warning {
+      background: rgba(250, 204, 21, 0.15);
+      color: var(--mm-warning);
+      border: 1px solid rgba(250, 204, 21, 0.3);
+    }
+
+    .badge-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--mm-danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .badge-info {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--mm-info);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .deployment-status {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-radius: var(--mm-radius-md);
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid var(--mm-border-soft);
+    }
+
+    .status-label {
+      font-weight: 600;
+      color: var(--mm-text-muted);
+    }
+
+    .status-value {
+      font-weight: 700;
+      font-size: 1.125rem;
+    }
+
+    .deployment-history {
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .deployment-entry {
+      padding: 1rem;
+      border-left: 3px solid var(--mm-border);
+      margin-bottom: 1rem;
+      border-radius: 0 var(--mm-radius-md) var(--mm-radius-md) 0;
+      background: rgba(15, 23, 42, 0.4);
+      transition: all 150ms ease;
+    }
+
+    .deployment-entry:hover {
+      background: rgba(15, 23, 42, 0.6);
+      border-left-color: var(--mm-accent);
+    }
+
+    .deployment-entry.success {
+      border-left-color: var(--mm-success);
+    }
+
+    .deployment-entry.failed {
+      border-left-color: var(--mm-danger);
+    }
+
+    .deployment-entry.pending {
+      border-left-color: var(--mm-warning);
+    }
+
+    .deployment-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 0.5rem;
+      gap: 1rem;
+    }
+
+    .deployment-site {
+      font-weight: 700;
+      font-size: 1.125rem;
+    }
+
+    .deployment-time {
+      font-size: 0.875rem;
+      color: var(--mm-text-muted);
+      white-space: nowrap;
+    }
+
+    .deployment-message {
+      font-size: 0.875rem;
+      color: var(--mm-text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .deployment-stats {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.75rem;
+      color: var(--mm-text-muted);
+    }
+
+    .logs-container {
+      grid-column: 1 / -1;
+    }
+
+    .logs-box {
+      background: #0a0e1a;
+      border: 1px solid var(--mm-border);
+      border-radius: var(--mm-radius-md);
+      padding: 1.5rem;
+      max-height: 400px;
+      overflow-y: auto;
+      font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    .log-line {
+      padding: 0.25rem 0;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.05);
+    }
+
+    .log-line:last-child {
+      border-bottom: none;
+    }
+
+    .log-time {
+      color: var(--mm-text-muted);
+      margin-right: 1rem;
+    }
+
+    .log-level {
+      padding: 0.125rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      margin-right: 0.5rem;
+    }
+
+    .log-level.info {
+      background: rgba(59, 130, 246, 0.2);
+      color: var(--mm-info);
+    }
+
+    .log-level.success {
+      background: rgba(34, 197, 94, 0.2);
+      color: var(--mm-success);
+    }
+
+    .log-level.warning {
+      background: rgba(250, 204, 21, 0.2);
+      color: var(--mm-warning);
+    }
+
+    .log-level.error {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--mm-danger);
+    }
+
+    .queue-panel {
+      grid-column: 1 / -1;
+    }
+
+    .queue-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .queue-stat {
+      padding: 1.25rem;
+      border-radius: var(--mm-radius-md);
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid var(--mm-border-soft);
+    }
+
+    .queue-stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .queue-stat-label {
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--mm-text-muted);
+    }
+
+    .action-panel {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      padding: 1rem;
+      border-radius: var(--mm-radius-md);
+      background: rgba(15, 23, 42, 0.4);
+    }
+
+    .action-info {
+      flex: 1;
+    }
+
+    .action-title {
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .action-desc {
+      font-size: 0.875rem;
+      color: var(--mm-text-muted);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--mm-text-muted);
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--mm-border);
+      border-top-color: var(--mm-accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="admin-container">
+    <header class="admin-header">
+      <div class="admin-header-top">
+        <h1 class="admin-title">Deployment <span class="accent">Management</span></h1>
+        <nav class="admin-nav">
+          <a href="/" class="btn btn-secondary">← Home</a>
+          <a href="/admin/microsites" class="btn btn-outline">Microsites</a>
+          <button onclick="refreshAll()" class="btn btn-primary">🔄 Refresh</button>
+        </nav>
+      </div>
+    </header>
+
+    <div class="deployment-grid">
+      <!-- System Status -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">System Status</h2>
+          <span class="panel-badge badge-success" id="systemStatus">Operational</span>
+        </div>
+        <div class="deployment-status">
+          <div class="status-item">
+            <span class="status-label">GitHub Pages</span>
+            <span class="status-value" style="color: var(--mm-success);" id="githubStatus">✓ Online</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">Worker Service</span>
+            <span class="status-value" style="color: var(--mm-warning);" id="workerStatus">⚠ Offline</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">Redis Queue</span>
+            <span class="status-value" style="color: var(--mm-warning);" id="redisStatus">⚠ Unknown</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">Last Deployment</span>
+            <span class="status-value" id="lastDeploy">6d ago</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Queue Status -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Build Queue</h2>
+          <span class="panel-badge badge-info" id="queueBadge">0 Jobs</span>
+        </div>
+        <div class="queue-stats">
+          <div class="queue-stat">
+            <div class="queue-stat-value" style="color: var(--mm-warning);" id="queuePending">0</div>
+            <div class="queue-stat-label">Pending</div>
+          </div>
+          <div class="queue-stat">
+            <div class="queue-stat-value" style="color: var(--mm-info);" id="queueActive">0</div>
+            <div class="queue-stat-label">Active</div>
+          </div>
+          <div class="queue-stat">
+            <div class="queue-stat-value" style="color: var(--mm-success);" id="queueCompleted">0</div>
+            <div class="queue-stat-label">Completed</div>
+          </div>
+          <div class="queue-stat">
+            <div class="queue-stat-value" style="color: var(--mm-danger);" id="queueFailed">0</div>
+            <div class="queue-stat-label">Failed</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Deployments -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Recent Deployments</h2>
+          <button onclick="loadDeployments()" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.5rem 1rem;">
+            Refresh
+          </button>
+        </div>
+        <div class="deployment-history" id="deploymentHistory">
+          <div class="empty-state">
+            <div class="spinner"></div>
+            <p>Loading deployments...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Quick Actions</h2>
+        </div>
+        <div class="action-panel">
+          <div class="action-row">
+            <div class="action-info">
+              <div class="action-title">Deploy All Sites</div>
+              <div class="action-desc">Trigger regeneration for all microsites</div>
+            </div>
+            <button onclick="deployAll()" class="btn btn-primary">Deploy</button>
+          </div>
+          <div class="action-row">
+            <div class="action-info">
+              <div class="action-title">Clear Build Queue</div>
+              <div class="action-desc">Remove all pending jobs from queue</div>
+            </div>
+            <button onclick="clearQueue()" class="btn btn-danger">Clear</button>
+          </div>
+          <div class="action-row">
+            <div class="action-info">
+              <div class="action-title">Sync to GitHub</div>
+              <div class="action-desc">Push changes to GitHub Pages</div>
+            </div>
+            <button onclick="syncGitHub()" class="btn btn-success">Sync</button>
+          </div>
+          <div class="action-row">
+            <div class="action-info">
+              <div class="action-title">Health Check</div>
+              <div class="action-desc">Verify all systems are operational</div>
+            </div>
+            <button onclick="runHealthCheck()" class="btn btn-outline">Check</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deployment Logs -->
+      <div class="panel logs-container">
+        <div class="panel-header">
+          <h2 class="panel-title">System Logs</h2>
+          <div style="display: flex; gap: 0.5rem;">
+            <button onclick="clearLogs()" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.5rem 1rem;">
+              Clear
+            </button>
+            <button onclick="loadLogs()" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.5rem 1rem;">
+              Refresh
+            </button>
+          </div>
+        </div>
+        <div class="logs-box" id="logsBox">
+          <div class="log-line">
+            <span class="log-time">--:--:--</span>
+            <span class="log-level info">INFO</span>
+            <span>System initialized. Waiting for events...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let logs = [];
+    let deployments = [];
+
+    function addLog(level, message) {
+      const time = new Date().toLocaleTimeString();
+      logs.push({ time, level, message });
+      
+      // Keep only last 100 logs
+      if (logs.length > 100) {
+        logs = logs.slice(-100);
+      }
+      
+      renderLogs();
+    }
+
+    function renderLogs() {
+      const logsBox = document.getElementById('logsBox');
+      logsBox.innerHTML = logs.map(log => `
+        <div class="log-line">
+          <span class="log-time">${log.time}</span>
+          <span class="log-level ${log.level}">${log.level.toUpperCase()}</span>
+          <span>${log.message}</span>
+        </div>
+      `).join('');
+      
+      // Auto-scroll to bottom
+      logsBox.scrollTop = logsBox.scrollHeight;
+    }
+
+    function clearLogs() {
+      logs = [];
+      renderLogs();
+      addLog('info', 'Logs cleared');
+    }
+
+    async function loadLogs() {
+      try {
+        const response = await fetch('/api/admin/logs');
+        if (response.ok) {
+          const data = await response.json();
+          logs = data.logs || [];
+          renderLogs();
+        } else {
+          addLog('warning', 'Could not load logs from server. Using local logs only.');
+        }
+      } catch (error) {
+        addLog('error', `Failed to load logs: ${error.message}`);
+      }
+    }
+
+    async function loadDeployments() {
+      try {
+        const response = await fetch('/api/admin/deployments');
+        if (response.ok) {
+          const data = await response.json();
+          deployments = data.deployments || [];
+        } else {
+          // Fallback to mock data
+          deployments = generateMockDeployments();
+        }
+      } catch (error) {
+        addLog('warning', 'Using mock deployment data - API not available');
+        deployments = generateMockDeployments();
+      }
+      
+      renderDeployments();
+    }
+
+    function generateMockDeployments() {
+      return [
+        {
+          site: 'martocci-mayhem',
+          status: 'success',
+          message: 'Site generated successfully with 0 videos',
+          timestamp: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+          duration: '45s',
+          files: 12
+        }
+      ];
+    }
+
+    function renderDeployments() {
+      const container = document.getElementById('deploymentHistory');
+      
+      if (deployments.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <p>No recent deployments</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = deployments.map(dep => `
+        <div class="deployment-entry ${dep.status}">
+          <div class="deployment-meta">
+            <div class="deployment-site">${dep.site}</div>
+            <div class="deployment-time">${formatTime(dep.timestamp)}</div>
+          </div>
+          <div class="deployment-message">${dep.message}</div>
+          <div class="deployment-stats">
+            <span>⏱️ ${dep.duration}</span>
+            <span>📁 ${dep.files} files</span>
+            <span class="status-${dep.status}">
+              ${dep.status === 'success' ? '✓' : dep.status === 'failed' ? '✗' : '⋯'} ${dep.status}
+            </span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function formatTime(timestamp) {
+      const date = new Date(timestamp);
+      const now = new Date();
+      const diffMs = now - date;
+      const diffMins = Math.floor(diffMs / (1000 * 60));
+      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      
+      if (diffMins < 1) return 'Just now';
+      if (diffMins < 60) return `${diffMins}m ago`;
+      if (diffHours < 24) return `${diffHours}h ago`;
+      if (diffDays < 7) return `${diffDays}d ago`;
+      return date.toLocaleDateString();
+    }
+
+    async function deployAll() {
+      if (!confirm('Deploy all microsites? This will trigger regeneration for all sites.')) {
+        return;
+      }
+
+      addLog('info', 'Starting deployment for all sites...');
+      
+      try {
+        const response = await fetch('/api/admin/deploy-all', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response.ok) {
+          addLog('success', 'All sites queued for deployment');
+          await updateQueueStats();
+        } else {
+          addLog('error', 'Failed to queue deployments');
+        }
+      } catch (error) {
+        addLog('error', `Deployment error: ${error.message}. Backend API required.`);
+      }
+    }
+
+    async function clearQueue() {
+      if (!confirm('Clear all pending jobs from the build queue?')) {
+        return;
+      }
+
+      addLog('warning', 'Clearing build queue...');
+      
+      try {
+        const response = await fetch('/api/admin/clear-queue', {
+          method: 'POST'
+        });
+
+        if (response.ok) {
+          addLog('success', 'Build queue cleared');
+          await updateQueueStats();
+        } else {
+          addLog('error', 'Failed to clear queue');
+        }
+      } catch (error) {
+        addLog('error', `Queue clear error: ${error.message}. Backend API required.`);
+      }
+    }
+
+    async function syncGitHub() {
+      addLog('info', 'Syncing to GitHub Pages...');
+      
+      try {
+        const response = await fetch('/api/admin/sync-github', {
+          method: 'POST'
+        });
+
+        if (response.ok) {
+          addLog('success', 'Changes pushed to GitHub successfully');
+        } else {
+          addLog('error', 'Failed to sync with GitHub');
+        }
+      } catch (error) {
+        addLog('error', `GitHub sync error: ${error.message}. Backend API required.`);
+      }
+    }
+
+    async function runHealthCheck() {
+      addLog('info', 'Running health check...');
+      
+      try {
+        const response = await fetch('/api/admin/health');
+        
+        if (response.ok) {
+          const data = await response.json();
+          addLog('success', `Health check passed: ${JSON.stringify(data.status)}`);
+          updateSystemStatus(data);
+        } else {
+          addLog('warning', 'Health check returned errors');
+        }
+      } catch (error) {
+        addLog('warning', 'Health check unavailable - backend API not running');
+        updateSystemStatus({ 
+          github: 'online', 
+          worker: 'offline', 
+          redis: 'unknown' 
+        });
+      }
+    }
+
+    function updateSystemStatus(status) {
+      const githubEl = document.getElementById('githubStatus');
+      const workerEl = document.getElementById('workerStatus');
+      const redisEl = document.getElementById('redisStatus');
+
+      if (status.github === 'online') {
+        githubEl.textContent = '✓ Online';
+        githubEl.style.color = 'var(--mm-success)';
+      } else {
+        githubEl.textContent = '✗ Offline';
+        githubEl.style.color = 'var(--mm-danger)';
+      }
+
+      if (status.worker === 'online') {
+        workerEl.textContent = '✓ Online';
+        workerEl.style.color = 'var(--mm-success)';
+      } else {
+        workerEl.textContent = '⚠ Offline';
+        workerEl.style.color = 'var(--mm-warning)';
+      }
+
+      if (status.redis === 'online') {
+        redisEl.textContent = '✓ Online';
+        redisEl.style.color = 'var(--mm-success)';
+      } else {
+        redisEl.textContent = '⚠ Unknown';
+        redisEl.style.color = 'var(--mm-warning)';
+      }
+    }
+
+    async function updateQueueStats() {
+      try {
+        const response = await fetch('/api/admin/queue-stats');
+        
+        if (response.ok) {
+          const data = await response.json();
+          document.getElementById('queuePending').textContent = data.pending || 0;
+          document.getElementById('queueActive').textContent = data.active || 0;
+          document.getElementById('queueCompleted').textContent = data.completed || 0;
+          document.getElementById('queueFailed').textContent = data.failed || 0;
+          
+          const total = (data.pending || 0) + (data.active || 0);
+          document.getElementById('queueBadge').textContent = `${total} Jobs`;
+        }
+      } catch (error) {
+        addLog('warning', 'Queue stats unavailable');
+      }
+    }
+
+    async function refreshAll() {
+      addLog('info', 'Refreshing all data...');
+      await Promise.all([
+        loadDeployments(),
+        updateQueueStats(),
+        runHealthCheck()
+      ]);
+      addLog('success', 'Data refreshed');
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      addLog('info', 'Deployment management system initialized');
+      loadDeployments();
+      updateQueueStats();
+      
+      // Auto-refresh every 30 seconds
+      setInterval(() => {
+        updateQueueStats();
+      }, 30000);
+    });
+  </script>
+</body>
+
+</html>
