@@ -596,16 +596,17 @@
   <script>
     let logs = [];
     let deployments = [];
+    const MAX_LOGS = 100;
 
     function addLog(level, message) {
       const time = new Date().toLocaleTimeString();
-      logs.push({ time, level, message });
       
-      // Keep only last 100 logs
-      if (logs.length > 100) {
-        logs = logs.slice(-100);
+      // Efficiently manage log size - shift old logs when at capacity
+      if (logs.length >= MAX_LOGS) {
+        logs.shift();
       }
       
+      logs.push({ time, level, message });
       renderLogs();
     }
 

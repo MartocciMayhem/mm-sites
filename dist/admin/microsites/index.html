@@ -547,12 +547,27 @@
     }
 
     async function loadLocalMicrosites() {
-      // Fallback: load from known site directories
-      const knownSites = [
-        { slug: 'martocci-mayhem', name: 'Martocci Mayhem' },
-        { slug: 'mayhem-maker', name: 'Mayhem Maker' },
-        { slug: 'savage-grandma', name: 'Savage Grandma' }
-      ];
+      // Try to load site list from config
+      let knownSites = [];
+      
+      try {
+        const configResponse = await fetch('/sites-config.json');
+        if (configResponse.ok) {
+          const config = await configResponse.json();
+          knownSites = config.sites || [];
+        }
+      } catch (error) {
+        console.log('Config not found, using fallback discovery');
+      }
+
+      // Fallback: Use hardcoded list if config not available
+      if (knownSites.length === 0) {
+        knownSites = [
+          { slug: 'martocci-mayhem', name: 'Martocci Mayhem' },
+          { slug: 'mayhem-maker', name: 'Mayhem Maker' },
+          { slug: 'savage-grandma', name: 'Savage Grandma' }
+        ];
+      }
 
       micrositesData = [];
 
