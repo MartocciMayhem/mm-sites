@@ -44,7 +44,6 @@
       color: var(--mm-text-primary);
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
-      scroll-behavior: smooth;
     }
 
     a {
@@ -114,19 +113,6 @@
       color: var(--mm-accent);
       font-weight: 600;
       width: fit-content;
-      animation: pulse-glow 3s ease-in-out infinite;
-    }
-
-    @keyframes pulse-glow {
-
-      0%,
-      100% {
-        box-shadow: 0 0 0 0 rgba(251, 191, 36, 0);
-      }
-
-      50% {
-        box-shadow: 0 0 20px 4px rgba(251, 191, 36, 0.3);
-      }
     }
 
     .hero__title {
@@ -310,7 +296,7 @@
       box-shadow: 0 12px 24px rgba(2, 6, 23, 0.28);
       overflow: hidden;
       text-decoration: none;
-      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      transition: transform 160ms ease, border-color 160ms ease;
       scroll-snap-align: start;
       min-height: 100%;
     }
@@ -318,7 +304,6 @@
     .video-card:hover {
       transform: translateY(-3px);
       border-color: rgba(251, 191, 36, 0.6);
-      box-shadow: 0 20px 40px rgba(251, 191, 36, 0.2);
     }
 
     .video-thumb {
@@ -452,50 +437,12 @@
       border: 1px solid var(--mm-border-soft);
       text-decoration: none;
       min-height: 200px;
-      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-      animation: fadeInUp 0.5s ease-out backwards;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .channel-card:nth-child(1) {
-      animation-delay: 0.05s;
-    }
-
-    .channel-card:nth-child(2) {
-      animation-delay: 0.1s;
-    }
-
-    .channel-card:nth-child(3) {
-      animation-delay: 0.15s;
-    }
-
-    .channel-card:nth-child(4) {
-      animation-delay: 0.2s;
-    }
-
-    .channel-card:nth-child(5) {
-      animation-delay: 0.25s;
-    }
-
-    .channel-card:nth-child(6) {
-      animation-delay: 0.3s;
+      transition: transform 160ms ease, border-color 160ms ease;
     }
 
     .channel-card:hover {
       transform: translateY(-4px);
       border-color: rgba(251, 191, 36, 0.5);
-      box-shadow: 0 20px 40px rgba(251, 191, 36, 0.15);
     }
 
     .channel-card__eyebrow {
@@ -590,29 +537,6 @@
       color: var(--mm-text-muted);
       background: rgba(15, 23, 42, 0.6);
       border: 1px dashed var(--mm-border);
-      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: 0.5;
-      }
-    }
-
-    .empty-state {
-      padding: 48px 24px;
-      text-align: center;
-      color: var(--mm-text-muted);
-      font-size: 1rem;
-      border-radius: var(--mm-radius-md);
-      background: rgba(15, 23, 42, 0.4);
-      border: 1px dashed var(--mm-border-soft);
     }
 
     footer {
@@ -798,12 +722,6 @@
 </head>
 
 <body>
-  <!-- LIVE BUILD INDICATOR -->
-  <div
-    style="position:fixed;top:10px;right:10px;background:#22c55e;color:#fff;padding:8px 16px;border-radius:6px;font-weight:bold;font-size:14px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.3);">
-    🟢 LIVE - Root Portal
-  </div>
-
   <header class="hero">
     <div class="hero__inner">
       <div class="hero__top">
@@ -1004,7 +922,7 @@
 
   <script>
     (function () {
-      const CHANNELS = [{"slug":"martocci-mayhem","name":"Martocci Mayhem","description":"Loading channel metrics...","createdAt":"2025-11-13T21:36:31.609Z","siteGeneratedAt":"2025-11-13T22:41:25.743Z","siteGenerationError":"ENOENT: no such file or directory, open 'C:\\Development\\Web\\MartocciMayhem\\mm-site\\_templates\\index_template.html'","siteGenerated":false,"metaSummary":{"mayhemLevel":null,"mayhemScore":null,"totalViews":null,"totalVideos":0,"lastRefresh":null}}];
+      const CHANNELS = [{"slug":"martocci-mayhem","name":"Martocci Mayhem","description":"Loading channel metrics...","createdAt":"2025-11-13T21:36:31.609Z","siteGeneratedAt":"2025-11-13T22:41:25.743Z","siteGenerationError":"Microsite generated with fallback content","siteGenerated":false,"metaSummary":{"mayhemLevel":null,"mayhemScore":null,"totalViews":null,"totalVideos":0,"lastRefresh":null}}];
       const LIMITS = {
         latest: 15,
         topViewed: 15,

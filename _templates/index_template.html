@@ -8,8 +8,9 @@
   <meta name="description" content="{{ site_description or 'Explore videos and updates.' }}">
   <meta name="generator" content="Mayhem Maker {{ app_version }} ({{ build_stamp }})">
   <link rel="canonical" href="{{ site_url }}">
-  <link rel="icon" href="/images/favicon.ico">
-  <link rel="stylesheet" href="/assets/light.css" media="(prefers-color-scheme: light)">
+  <base href="{{ site_url }}/">
+  <link rel="icon" href="images/favicon.ico">
+  <link rel="stylesheet" href="assets/light.css" media="(prefers-color-scheme: light)">
 
   <!-- Preconnect / DNS -->
   <link rel="preconnect" href="https://i.ytimg.com">
@@ -38,6 +39,31 @@
 
     :root {
       color-scheme: dark;
+
+      /* Design System Tokens - Match Main Site */
+      --mm-bg: radial-gradient(circle at 20% -20%, rgba(56, 189, 248, 0.16), transparent 55%),
+        radial-gradient(circle at 82% 0%, rgba(129, 140, 248, 0.18), transparent 62%),
+        #05060c;
+      --mm-surface: rgba(12, 16, 30, 0.82);
+      --mm-surface-border: rgba(148, 163, 184, 0.22);
+      --mm-surface-glow: rgba(59, 130, 246, 0.28);
+      --mm-text-primary: #f8fafc;
+      --mm-text-muted: #94a3b8;
+      --mm-accent: #fbbf24;
+      --mm-accent-hover: #fcd34d;
+
+      --mm-radius-sm: 6px;
+      --mm-radius-md: 12px;
+      --mm-radius-lg: 16px;
+
+      --mm-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+      --mm-shadow-md: 0 8px 16px rgba(0, 0, 0, 0.2);
+      --mm-shadow-lg: 0 24px 44px rgba(2, 6, 23, 0.35);
+
+      --mm-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --mm-transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      --mm-transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+      --mm-transition: var(--mm-transition-base);
     }
 
     * {
@@ -52,8 +78,8 @@
     body {
       margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      background: #0f0f0f;
-      color: #fff;
+      background: var(--mm-bg);
+      color: var(--mm-text-primary);
       -webkit-text-size-adjust: 100%;
     }
 
@@ -65,30 +91,52 @@
       display: block;
     }
 
-    /* ===== Header (logo left, title centered; no overlap on mobile) ===== */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ===== Header ===== */
     header {
       position: relative;
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 10px 12px;
-      border-bottom: 1px solid #222;
-      background: #0f0f0f;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--mm-surface-border);
+      background: rgba(5, 6, 12, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 40;
     }
 
     header .brand {
       display: flex;
       align-items: center;
-      gap: 8px;
-      color: #fff;
+      gap: 10px;
+      color: var(--mm-text-primary);
       text-decoration: none;
       font-weight: 700;
       z-index: 2;
+      transition: transform var(--mm-transition-fast);
+    }
+
+    header .brand:hover {
+      transform: scale(1.02);
     }
 
     header .brand img {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px var(--mm-surface-glow);
     }
 
     header .site-title {
@@ -97,7 +145,7 @@
       transform: translateX(-50%);
       margin: 0;
       font-weight: 800;
-      color: #eee;
+      color: var(--mm-text-primary);
       font-size: clamp(1rem, 2.2vw, 1.35rem);
       line-height: 1.2;
       text-align: center;
@@ -107,6 +155,7 @@
       header {
         flex-direction: column;
         align-items: flex-start;
+        padding: 12px 16px;
       }
 
       header .site-title {
@@ -114,37 +163,201 @@
         transform: none;
         width: 100%;
         text-align: center;
-        margin-top: 2px;
+        margin-top: 4px;
       }
     }
 
-    /* ===== Sticky toolbar (only this is sticky) ===== */
-    /* One sticky block that contains two stacked rows */
+    /* ===== Hero Section ===== */
+    .hero {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    .hero__featured {
+      position: relative;
+      margin-bottom: 32px;
+      border-radius: var(--mm-radius-lg);
+      overflow: hidden;
+      background: var(--mm-surface);
+      border: 1px solid var(--mm-surface-border);
+      box-shadow: var(--mm-shadow-lg), 0 0 0 1px var(--mm-surface-glow);
+      transition: transform var(--mm-transition-base), box-shadow var(--mm-transition-base);
+    }
+
+    .hero__featured:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--mm-shadow-lg), 0 0 24px var(--mm-surface-glow);
+    }
+
+    .hero__video-card {
+      display: block;
+      position: relative;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .hero__video-card img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero__overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 60%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity var(--mm-transition-base);
+    }
+
+    .hero__video-card:hover .hero__overlay {
+      opacity: 1;
+    }
+
+    .hero__overlay svg {
+      width: 80px;
+      height: 80px;
+      fill: white;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+    }
+
+    .hero__meta {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 24px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+    }
+
+    .hero__meta .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: var(--mm-accent);
+      color: #000;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 999px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .hero__meta h2 {
+      margin: 0;
+      font-size: clamp(1.25rem, 3vw, 2rem);
+      font-weight: 800;
+      color: white;
+      line-height: 1.2;
+    }
+
+    .hero__stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat {
+      background: var(--mm-surface);
+      border: 1px solid var(--mm-surface-border);
+      border-radius: var(--mm-radius-md);
+      padding: 20px;
+      text-align: center;
+      box-shadow: var(--mm-shadow-sm);
+    }
+
+    .stat__value {
+      display: block;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--mm-accent);
+      margin-bottom: 4px;
+    }
+
+    .stat__label {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--mm-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .hero__tagline {
+      text-align: center;
+      font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+      font-weight: 700;
+      color: var(--mm-text-primary);
+      margin: 0;
+      padding: 16px;
+      background: var(--mm-surface);
+      border: 1px solid var(--mm-surface-border);
+      border-radius: var(--mm-radius-md);
+      box-shadow: var(--mm-shadow-sm);
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        padding: 24px 16px;
+      }
+
+      .hero__meta {
+        padding: 16px;
+      }
+
+      .hero__stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+
+      .stat {
+        padding: 16px 12px;
+      }
+
+      .stat__value {
+        font-size: 1.5rem;
+      }
+
+      .hero__overlay svg {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    /* ===== Sticky toolbar ===== */
     .toolbar-wrap {
       position: sticky;
       top: 0;
-      /* if you later make the header sticky, set this to its height */
       z-index: 20;
-      background: #0f0f0f;
+      background: rgba(5, 6, 12, 0.95);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--mm-surface-border);
+      box-shadow: var(--mm-shadow-sm);
     }
 
-    /* Rows */
     .filters-row,
     .search-row {
-      padding: 10px 12px;
-      background: #0f0f0f;
+      padding: 12px 24px;
     }
 
-    /* Category chips (horizontal scroll) */
-    /* Horizontal scroll filter chips */
+    /* Category chips */
     .filters {
       display: flex;
       flex: 1 1 auto;
-      gap: 8px;
+      gap: 10px;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
-      padding-bottom: 2px;
+      padding-bottom: 4px;
     }
 
     .filters::-webkit-scrollbar {
@@ -152,103 +365,203 @@
     }
 
     .filters button {
-      background: #161616;
-      border: 1px solid #222;
-      color: #bbb;
-      padding: 8px 12px;
+      background: var(--mm-surface);
+      border: 1px solid var(--mm-surface-border);
+      color: var(--mm-text-muted);
+      padding: 10px 18px;
       border-radius: 999px;
       cursor: pointer;
       white-space: nowrap;
       flex: 0 0 auto;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: all var(--mm-transition-fast);
+    }
+
+    .filters button:hover {
+      background: rgba(12, 16, 30, 0.95);
+      border-color: var(--mm-surface-glow);
+      color: var(--mm-text-primary);
+      transform: translateY(-1px);
     }
 
     .filters button.active {
-      color: #fff;
-      border-color: #3ea6ff;
-    }
-
-    .search {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid #222;
-      background: #111;
-      color: #ddd;
+      background: var(--mm-accent);
+      color: #000;
+      border-color: var(--mm-accent);
+      font-weight: 700;
     }
 
     .search input {
       width: 100%;
-      padding: 10px 12px;
+      padding: 12px 16px;
       border-radius: 999px;
-      border: 1px solid #222;
-      background: #111;
-      color: #ddd;
+      border: 1px solid var(--mm-surface-border);
+      background: var(--mm-surface);
+      color: var(--mm-text-primary);
+      font-size: 0.9375rem;
+      transition: all var(--mm-transition-base);
     }
 
-    /* ===== Full-width content ===== */
+    .search input::placeholder {
+      color: var(--mm-text-muted);
+    }
+
+    .search input:focus {
+      outline: none;
+      border-color: var(--mm-accent);
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+    }
+
+    /* ===== Main content ===== */
     main {
       width: 100%;
-      margin: 0;
-      padding: 12px;
-      max-width: none;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    .content-wrap {
+      padding: 24px;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
     }
 
     .card {
-      background: #111;
-      border: 1px solid #222;
-      border-radius: 12px;
+      background: var(--mm-surface);
+      border: 1px solid var(--mm-surface-border);
+      border-radius: var(--mm-radius-md);
       overflow: hidden;
       display: block;
+      text-decoration: none;
+      color: inherit;
+      transition: all var(--mm-transition-base);
+      box-shadow: var(--mm-shadow-sm);
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--mm-shadow-md), 0 0 20px var(--mm-surface-glow);
+      border-color: var(--mm-surface-glow);
+    }
+
+    .card__thumb-wrap {
+      position: relative;
+      overflow: hidden;
     }
 
     .thumb {
       aspect-ratio: 16/9;
       object-fit: cover;
       display: block;
+      width: 100%;
+      transition: transform var(--mm-transition-slow);
+    }
+
+    .card:hover .thumb {
+      transform: scale(1.05);
+    }
+
+    .card__overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity var(--mm-transition-base);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card:hover .card__overlay {
+      opacity: 1;
+    }
+
+    .card__overlay svg {
+      width: 48px;
+      height: 48px;
+      fill: white;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
     }
 
     .body {
-      padding: 10px 12px;
-    }
-
-    a,
-    .link {
-      color: #3ea6ff;
-      text-decoration: none;
+      padding: 16px;
     }
 
     .title {
-      font-weight: 800;
-      margin: 8px 0 6px;
+      font-weight: 700;
+      font-size: 1rem;
+      margin: 0 0 8px 0;
+      line-height: 1.4;
+      color: var(--mm-text-primary);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .cat {
-      color: #9aa;
-      font-size: 1rem;
+      color: var(--mm-accent);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: inline-block;
     }
 
     .desc {
-      color: #9aa;
-      margin-top: 6px;
+      color: var(--mm-text-muted);
+      margin-top: 8px;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .meta {
-      margin-top: 8px;
-      font-size: 1rem;
+      margin-top: 12px;
+      font-size: 0.8125rem;
+      color: var(--mm-text-muted);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-    /* ===== Footer with social buttons ===== */
+    @media (max-width: 768px) {
+      .content-wrap {
+        padding: 16px;
+      }
+
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ===== Footer ===== */
     footer {
-      padding: 18px 12px;
-      border-top: 1px solid #222;
-      color: #aaa;
-      background: #0f0f0f;
+      padding: 32px 24px;
+      border-top: 1px solid var(--mm-surface-border);
+      color: var(--mm-text-muted);
+      background: rgba(5, 6, 12, 0.8);
+      margin-top: 48px;
     }
 
     .footer-inner {
@@ -258,44 +571,58 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 20px;
+    }
+
+    .footer-inner a {
+      color: var(--mm-accent);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color var(--mm-transition-fast);
+    }
+
+    .footer-inner a:hover {
+      color: var(--mm-accent-hover);
     }
 
     .socials {
       display: flex;
-      gap: 10px;
+      gap: 12px;
     }
 
     .social-btn {
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       display: grid;
       place-items: center;
-      background: #141414;
-      border: 1px solid #222;
-      transition: transform .15s ease, border-color .15s ease;
+      background: var(--mm-surface);
+      border: 1px solid var(--mm-surface-border);
+      transition: all var(--mm-transition-base);
+      text-decoration: none;
     }
 
     .social-btn:hover {
-      transform: translateY(-1px);
-      border-color: #3ea6ff;
+      transform: translateY(-2px);
+      border-color: var(--mm-accent);
+      background: rgba(251, 191, 36, 0.1);
     }
 
     .social-btn svg {
       width: 20px;
       height: 20px;
-      fill: #cfcfcf;
+      fill: var(--mm-text-primary);
     }
 
-    @media (max-width: 560px) {
-      .toolbar {
-        padding: 8px 10px;
-        gap: 8px;
+    @media (max-width: 768px) {
+      footer {
+        padding: 24px 16px;
       }
 
-      .search {
-        flex: 0 0 min(60%, 320px);
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
       }
     }
 
@@ -303,6 +630,7 @@
     .lang-switcher {
       position: relative;
       margin-left: auto;
+      z-index: 60;
     }
 
     .lang-btn {
@@ -337,7 +665,7 @@
       padding: 12px;
       min-width: 200px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-      z-index: 100;
+      z-index: 9999;
     }
 
     .lang-panel__heading {
@@ -453,9 +781,11 @@
 
 <body>
   <header>
-    <a class="brand" href="/"><img src="{{ site_logo_url or '/images/JasonMartocciLogo.webp' }}" width="28" height="28"
-        alt="Logo"><span data-i18n="hero_title">{{ channel_name or 'Your 2 channel' }}</span></a>
-    <h1 class="site-title" data-i18n="tagline">Slice • Smash • Laugh • Repeat 🔥</h1>
+    <a class="brand" href="index.html"><img src="{{ site_logo_url or 'images/JasonMartocciLogo.webp' }}" width="28"
+        height="28" alt="{{ site_name or 'Channel logo' }}"
+        onerror="this.onerror=null;this.src='images/JasonMartocciLogo.webp';"><span class="sr-only"
+        data-i18n="hero_title">{{ site_name or 'Your channel' }}</span></a>
+    <h1 class="site-title" data-i18n="tagline">{{ site_tagline or 'Slice • Smash • Laugh • Repeat 🔥' }}</h1>
     <div class="lang-switcher" id="lang-switcher">
       <button type="button" class="lang-btn" id="lang-btn" aria-label="Choose language" title="Language">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -486,25 +816,64 @@
   </header>
 
   <main>
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+      <div class="hero__featured" id="hero-featured" style="display: none;">
+        <a href="#" class="hero__video-card" id="hero-link">
+          <img id="hero-thumb" src="" alt="" loading="eager">
+          <div class="hero__overlay">
+            <svg viewBox="0 0 24 24" fill="white">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+          <div class="hero__meta">
+            <span class="badge">Latest Upload</span>
+            <h2 id="hero-title"></h2>
+          </div>
+        </a>
+      </div>
+
+      <div class="hero__stats">
+        <div class="stat">
+          <span class="stat__value" id="total-views">0</span>
+          <span class="stat__label">Total Views</span>
+        </div>
+        <div class="stat">
+          <span class="stat__value" id="total-likes">0</span>
+          <span class="stat__label">Total Likes</span>
+        </div>
+        <div class="stat">
+          <span class="stat__value" id="video-count">0</span>
+          <span class="stat__label">Videos</span>
+        </div>
+      </div>
+
+      <p class="hero__tagline" data-i18n="tagline">{{ site_tagline or 'Slice • Smash • Laugh • Repeat 🔥' }}</p>
+    </section>
+
+    <!-- Filters & Search -->
     <div class="toolbar-wrap">
       <div class="filters-row">
         <div class="filters" id="filters"></div>
       </div>
       <div class="search-row">
-        <input id="q" class="search" type="search" placeholder="Search titles, descriptions, tags…"
-          data-i18n="search_placeholder">
+        <div class="search">
+          <input id="q" type="search" placeholder="Search titles, descriptions, tags…" data-i18n="search_placeholder">
+        </div>
       </div>
     </div>
-    <!-- SINGLE grid -->
-    <div class="grid" id="grid"></div>
 
-    <!-- Sentinel should immediately follow the grid it drives -->
-    <div id="sentinel" aria-hidden="true"></div>
+    <!-- Video Grid -->
+    <div class="content-wrap">
+      <div class="grid" id="grid"></div>
+      <div id="sentinel" aria-hidden="true"></div>
+    </div>
   </main>
 
   <footer>
     <div class="footer-inner">
-      <div><span data-i18n="copyright_prefix">©</span> {{ current_year }} Martocci Mayhem</div>
+      <div><span data-i18n="copyright_prefix">©</span> {{ current_year }} <a href="{{ brand_link }}" target="_blank"
+          rel="noopener noreferrer">Martocci Mayhem</a></div>
 
       <style>
         .socials {
@@ -548,8 +917,8 @@
 
       <nav class="socials" aria-label="Social links">
         <!-- X / Twitter -->
-        <a class="social-btn" href="https://x.com/MartocciMayhem" target="_blank" rel="noopener noreferrer"
-          aria-label="X (Twitter)" title="X (Twitter)">
+        <a class="social-btn" href="{{ socialX }}" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)"
+          title="X (Twitter)">
           <svg viewBox="0 0 1200 1227" aria-hidden="true">
             <path
               d="M714 519 1160 0H1064L663 464 357 0H0l463 681L0 1227h96l424-483 330 483h357L714 519ZM556 676l-49-70-389-553h167l314 445 49 70 401 569h-167L556 676Z" />
@@ -557,8 +926,8 @@
         </a>
 
         <!-- TikTok -->
-        <a class="social-btn" href="https://www.tiktok.com/@MartocciMayhem" target="_blank" rel="noopener noreferrer"
-          aria-label="TikTok" title="TikTok">
+        <a class="social-btn" href="{{ socialTikTok }}" target="_blank" rel="noopener noreferrer" aria-label="TikTok"
+          title="TikTok">
           <svg viewBox="0 0 48 48" aria-hidden="true">
             <path
               d="M41,18.6c-3.4,0-6.6-1.1-9.2-3.1v12.4c0,7.8-6.3,14.1-14.1,14.1S3.5,35.7,3.5,27.9c0-6.3,4.1-11.6,9.8-13.4v6.3 c-2.1,1.3-3.5,3.7-3.5,6.4c0,4.1,3.4,7.5,7.5,7.5s7.5-3.4,7.5-7.5V6.5h6.4c0.6,3.6,3.4,6.6,7,7.5V18.6z" />
@@ -566,8 +935,8 @@
         </a>
 
         <!-- YouTube -->
-        <a class="social-btn" href="https://www.youtube.com/@MartocciMayhem" target="_blank" rel="noopener noreferrer"
-          aria-label="YouTube" title="YouTube">
+        <a class="social-btn" href="{{ socialYouTube }}" target="_blank" rel="noopener noreferrer" aria-label="YouTube"
+          title="YouTube">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path
               d="M23.498 6.186a2.974 2.974 0 0 0-2.093-2.103C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.405.583a2.974 2.974 0 0 0-2.093 2.103C0 8.095 0 12 0 12s0 3.905.502 5.814a2.974 2.974 0 0 0 2.093 2.103C4.495 20.5 12 20.5 12 20.5s7.505 0 9.405-.583a2.974 2.974 0 0 0 2.093-2.103C24 15.905 24 12 24 12s0-3.905-.502-5.814ZM9.75 15.5v-7l6.5 3.5-6.5 3.5Z" />
@@ -575,7 +944,7 @@
         </a>
 
         <!-- Instagram -->
-        <a class="social-btn" href="https://www.instagram.com/MartocciMayhem" target="_blank" rel="noopener noreferrer"
+        <a class="social-btn" href="{{ socialInstagram }}" target="_blank" rel="noopener noreferrer"
           aria-label="Instagram" title="Instagram">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path
@@ -584,7 +953,7 @@
         </a>
 
         <!-- Facebook -->
-        <a class="social-btn" href="https://www.facebook.com/MartocciMayhem" target="_blank" rel="noopener noreferrer"
+        <a class="social-btn" href="{{ socialFacebook }}" target="_blank" rel="noopener noreferrer"
           aria-label="Facebook" title="Facebook">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path
@@ -593,8 +962,8 @@
         </a>
 
         <!-- LinkedIn -->
-        <a class="social-btn" href="https://www.linkedin.com/in/MartocciMayhem" target="_blank"
-          rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
+        <a class="social-btn" href="{{ socialLinkedIn }}" target="_blank" rel="noopener noreferrer"
+          aria-label="LinkedIn" title="LinkedIn">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path
               d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3.5 8.98h2.96V21H3.5zM9 8.98h2.84v1.63h.04c.4-.75 1.38-1.54 2.84-1.54 3.03 0 3.59 1.99 3.59 4.57V21h-2.96v-4.92c0-1.17-.02-2.67-1.63-2.67-1.63 0-1.88 1.27-1.88 2.58V21H9z" />
@@ -608,11 +977,16 @@
     "use strict";
     (function () {
       function debounce(fn, ms) { let t; return function () { const a = arguments; clearTimeout(t); t = setTimeout(() => fn.apply(null, a), ms || 250); }; }
-      function compactMeta(views, likes, comments) {
-        const v = "Views:" + " " + Number(views || 0).toLocaleString();
-        const l = "Likes:" + " " + Number(likes || 0).toLocaleString();
-        const full = v + " · " + l;
-        return (full.length > 42) ? (v + " · " + l) : full;
+
+      function formatNumber(num) {
+        num = Number(num) || 0;
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+        if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+        return num.toLocaleString();
+      }
+
+      function compactMeta(views, likes) {
+        return `${formatNumber(views)} views · ${formatNumber(likes)} likes`;
       }
 
       const RAW = document.getElementById("__data");
@@ -621,6 +995,45 @@
 
       const DATA = ALL.map(v => ({ ...v, _t: (v.title || "").toLowerCase(), _d: (v.desc || "").toLowerCase(), _tags: (v.tags || []).map(t => String(t).toLowerCase()) }));
       const cats = ["All", ...Array.from(new Set(DATA.map(v => v.category || "People & Blogs"))).sort((a, b) => a.localeCompare(b))];
+
+      // Initialize hero section with latest video and stats
+      function initHero() {
+        if (DATA.length === 0) return;
+
+        // Get latest video (first one after sorting by date)
+        const latest = DATA[0];
+        const heroFeatured = document.getElementById('hero-featured');
+        const heroLink = document.getElementById('hero-link');
+        const heroThumb = document.getElementById('hero-thumb');
+        const heroTitle = document.getElementById('hero-title');
+
+        if (latest && heroFeatured && heroLink && heroThumb && heroTitle) {
+          heroLink.href = `./videos/${latest.slug}.html`;
+          heroThumb.src = `https://i.ytimg.com/vi/${latest.video_id}/maxresdefault.jpg`;
+          heroThumb.alt = latest.title || '';
+          heroThumb.onerror = function () {
+            this.onerror = null;
+            this.src = `https://i.ytimg.com/vi/${latest.video_id}/hqdefault.jpg`;
+          };
+          heroTitle.textContent = latest.title || '';
+          heroFeatured.style.display = 'block';
+        }
+
+        // Calculate total stats
+        let totalViews = 0, totalLikes = 0;
+        DATA.forEach(v => {
+          totalViews += Number(v.view_count) || 0;
+          totalLikes += Number(v.like_count) || 0;
+        });
+
+        const viewsEl = document.getElementById('total-views');
+        const likesEl = document.getElementById('total-likes');
+        const countEl = document.getElementById('video-count');
+
+        if (viewsEl) viewsEl.textContent = formatNumber(totalViews);
+        if (likesEl) likesEl.textContent = formatNumber(totalLikes);
+        if (countEl) countEl.textContent = DATA.length.toLocaleString();
+      }
 
       const filters = document.getElementById("filters");
       const grid = document.getElementById("grid");
@@ -643,7 +1056,7 @@
       qEl.addEventListener("input", debounce(e => {
         query = (e.target.value || "").toLowerCase().trim();
         applyFilters();
-      }, 200));
+      }, 150));
 
       function matchesQuery(v, q) {
         if (!q) return true;
@@ -659,7 +1072,7 @@
         Array.prototype.forEach.call(filters.children, b => b.classList.toggle("active", b.textContent === currentCat));
         filtered = DATA
           .filter(v => (currentCat === "All" || v.category === currentCat) && matchesQuery(v, query))
-          .sort((a, b) => String(b.last_edited_date || "").localeCompare(String(a.last_edited_date || ""))); // ok if ISO dates
+          .sort((a, b) => String(b.last_edited_date || "").localeCompare(String(a.last_edited_date || "")));
 
         grid.textContent = "";
         cursor = 0;
@@ -680,35 +1093,40 @@
 
       function card(v) {
         const a = document.createElement("a");
-        // Ensure link works regardless of trailing slash
-        const currentPath = window.location.pathname.replace(/\/?$/, '/');
-        a.href = currentPath + "videos/" + (v.slug || "") + ".html";
+        a.href = "videos/" + (v.slug || "") + ".html";
         a.className = "card";
 
-        const img = document.createElement("img");
-        img.className = "thumb";
-        img.loading = "lazy";
-        img.decoding = "async";
-        img.width = 320; img.height = 180;
-        img.src = "https://i.ytimg.com/vi/" + v.video_id + "/hqdefault.jpg";
-        img.alt = v.title || "";
-        img.onerror = function () { this.onerror = null; this.src = '/images/default-thumbnail.png'; };
+        const desc = (v.desc || "");
+        const truncDesc = desc.length > 90 ? desc.slice(0, 90) + "…" : desc;
 
-        const body = document.createElement("div"); body.className = "body";
-        const t = document.createElement("div"); t.className = "title"; t.textContent = v.title || "";
-        const cat = document.createElement("div"); cat.className = "cat"; cat.textContent = String(v.category || "");
-        const desc = document.createElement("div"); desc.className = "desc"; const raw = (v.desc || ""); desc.textContent = raw.length > 90 ? (raw.slice(0, 90) + "…") : raw;
-        const meta = document.createElement("div"); meta.className = "meta"; meta.textContent = compactMeta(v.view_count, v.like_count, v.comment_count);
+        a.innerHTML = `
+          <div class="card__thumb-wrap">
+            <img class="thumb" loading="lazy" decoding="async" width="320" height="180"
+                 src="https://i.ytimg.com/vi/${v.video_id}/hqdefault.jpg"
+                 alt="${(v.title || '').replace(/"/g, '&quot;')}"
+                 onerror="this.onerror=null;this.src='images/default-thumbnail.png'">
+            <div class="card__overlay">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+          <div class="body">
+            <div class="cat">${v.category || ''}</div>
+            <div class="title">${v.title || ''}</div>
+            <div class="desc">${truncDesc}</div>
+            <div class="meta">${compactMeta(v.view_count, v.like_count)}</div>
+          </div>
+        `;
 
-        body.appendChild(t); body.appendChild(cat); body.appendChild(desc); body.appendChild(meta);
-        a.appendChild(img); a.appendChild(body);
         return a;
       }
 
+      // Initialize hero before filters
+      initHero();
       applyFilters();
     })();
   </script>
-  <script src="/assets/i18n.js" defer></script>
+  <!-- Language switcher handled by i18n.js -->
+  <script src="assets/i18n.js" defer></script>
   <!-- generated by Mayhem Maker v{{ app_version }} @ {{ build_stamp }}Z -->
 </body>
 

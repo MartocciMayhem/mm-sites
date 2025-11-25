@@ -4,12 +4,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="{{ site_url }}/">
   <title>{{ title | truncate(59) }}</title>
   <meta name="description" content="{{ short_desc | truncate(135) }}">
   <meta name="generator" content="Mayhem Maker {{ app_version }} ({{ build_stamp }})">
   <link rel="canonical" href="{{ site_url }}/videos/{{ slug }}.html">
-  <link rel="icon" href="/images/favicon.ico">
-  <link rel="stylesheet" href="/assets/light.css" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="images/favicon.ico">
+  <link rel="stylesheet" href="assets/light.css" media="(prefers-color-scheme: light)">
 
   <!-- Preconnect / DNS -->
   <link rel="preconnect" href="https://www.youtube.com">
@@ -40,6 +41,32 @@
 
     :root {
       color-scheme: dark;
+
+      /* Design System Tokens - Match Main Site & Index */
+      --mm-bg: radial-gradient(circle at 20% -20%, rgba(56, 189, 248, 0.16), transparent 55%),
+        radial-gradient(circle at 82% 0%, rgba(129, 140, 248, 0.18), transparent 62%),
+        #05060c;
+      --mm-surface: rgba(12, 16, 30, 0.82);
+      --mm-surface-border: rgba(148, 163, 184, 0.22);
+      --mm-surface-glow: rgba(59, 130, 246, 0.28);
+      --mm-text-primary: #f8fafc;
+      --mm-text-muted: #94a3b8;
+      --mm-accent: #fbbf24;
+      --mm-accent-hover: #fcd34d;
+
+      --mm-radius-sm: 6px;
+      --mm-radius-md: 12px;
+      --mm-radius-lg: 16px;
+      --mm-radius: var(--mm-radius-md);
+
+      --mm-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+      --mm-shadow-md: 0 8px 16px rgba(0, 0, 0, 0.2);
+      --mm-shadow-lg: 0 24px 44px rgba(2, 6, 23, 0.35);
+
+      --mm-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --mm-transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      --mm-transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+      --mm-transition: var(--mm-transition-base);
     }
 
     * {
@@ -54,8 +81,8 @@
     body {
       margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      background: #0f0f0f;
-      color: #fff;
+      background: var(--mm-bg);
+      color: var(--mm-text-primary);
       -webkit-text-size-adjust: 100%;
     }
 
@@ -67,30 +94,52 @@
       display: block;
     }
 
-    /* Header: logo left, H1 centered (no overlap on mobile) */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ===== Header ===== */
     header {
       position: relative;
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-bottom: 1px solid #222;
-      background: #0f0f0f;
+      gap: 12px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--mm-surface-border);
+      background: rgba(5, 6, 12, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 40;
     }
 
     header .brand {
       display: flex;
       align-items: center;
-      gap: 8px;
-      color: #fff;
+      gap: 10px;
+      color: var(--mm-text-primary);
       text-decoration: none;
       font-weight: 700;
       z-index: 2;
+      transition: transform var(--mm-transition-fast);
+    }
+
+    header .brand:hover {
+      transform: scale(1.02);
     }
 
     header .brand img {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px var(--mm-surface-glow);
     }
 
     header .page-title {
@@ -99,33 +148,36 @@
       transform: translateX(-50%);
       margin: 0;
       font-weight: 800;
-      color: #eee;
-      font-size: clamp(1rem, 2.2vw, 1.35rem);
+      color: var(--mm-text-primary);
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
       line-height: 1.2;
       text-align: center;
+      max-width: 60%;
     }
 
-    @media (max-width:560px) {
+    @media (max-width: 560px) {
       header {
         flex-direction: column;
         align-items: flex-start;
+        padding: 12px 16px;
       }
 
       header .page-title {
         position: static;
         transform: none;
         width: 100%;
+        max-width: 100%;
         text-align: center;
-        margin-top: 2px;
+        margin-top: 4px;
       }
     }
 
-    /* Full-width content */
+    /* ===== Main content ===== */
     main {
       width: 100%;
-      margin: 0;
-      padding: clamp(12px, 2vw, 24px);
-      max-width: none;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: clamp(16px, 2vw, 32px);
       display: grid;
       grid-template-columns: minmax(0, 2.6fr) minmax(280px, 1fr);
       gap: clamp(14px, 2vw, 28px);
@@ -137,17 +189,17 @@
       }
     }
 
-    /* Video wrapper reserves height to prevent CLS */
+    /* Video wrapper */
     .video {
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
       overflow: hidden;
-      border-radius: 10px;
-      border: 1px solid #222;
-      box-shadow: 0 0 0 1px #111 inset, 0 10px 25px rgba(0, 0, 0, .35);
-      margin-bottom: 1rem;
-      /* add this line */
+      border-radius: var(--mm-radius-md);
+      border: 1px solid var(--mm-surface-border);
+      background: var(--mm-surface);
+      box-shadow: var(--mm-shadow-lg), 0 0 0 1px var(--mm-surface-glow);
+      margin-bottom: 1.5rem;
     }
 
     .video iframe {
@@ -172,38 +224,116 @@
       }
     }
 
+    #player-controls {
+      margin: 12px auto 0;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: flex-start;
+    }
+
+    #yt-controls {
+      display: none;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    #yt-controls button {
+      background: rgba(15, 18, 30, 0.75);
+      border: 1px solid var(--mm-surface-border);
+      border-radius: var(--mm-radius);
+      padding: 8px 14px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--mm-transition-fast), border-color var(--mm-transition-fast), color var(--mm-transition-fast);
+    }
+
+    #yt-controls button:hover {
+      background: rgba(251, 191, 36, 0.12);
+      border-color: var(--mm-accent);
+      color: var(--mm-accent-hover);
+    }
+
+    #yt-fallback {
+      display: none;
+      margin-top: 12px;
+      font-weight: 600;
+    }
+
     .card {
-      background: #111;
-      border: 1px solid #222;
-      border-radius: 12px;
-      padding: clamp(12px, 1.6vw, 18px);
+      background: var(--mm-surface);
+      border: 1px solid var(--mm-surface-border);
+      border-radius: var(--mm-radius-md);
+      padding: clamp(16px, 1.8vw, 24px);
+      box-shadow: var(--mm-shadow-sm);
     }
 
     section .card+.card {
-      margin-top: 16px;
+      margin-top: clamp(14px, 1.8vw, 20px);
+    }
+
+    .video-title {
+      margin: 0;
+      font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+      line-height: 1.2;
+      color: rgba(255, 255, 255, 0.96);
+    }
+
+    .meta {
+      margin-top: 14px;
+      font-size: 0.97rem;
+      color: rgba(255, 255, 255, 0.75);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .meta a {
-      color: #bbb;
+      color: rgba(255, 255, 255, 0.7);
       margin-right: 14px;
       text-decoration: none;
-      border-bottom: 1px dotted #444;
+      border-bottom: 1px dotted rgba(255, 255, 255, 0.2);
+      transition: var(--mm-transition);
     }
 
     .meta a:hover {
-      color: #fff;
-      border-color: #3ea6ff;
+      color: var(--mm-accent);
+      border-color: var(--mm-accent);
     }
 
     a,
     .link {
-      color: #3ea6ff;
+      color: var(--mm-accent);
       text-decoration: none;
+      transition: var(--mm-transition);
+    }
+
+    a:hover,
+    .link:hover {
+      color: rgba(251, 191, 36, 0.8);
+    }
+
+    .meta-actions {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-weight: 600;
     }
 
     .desc {
-      color: #ddd;
-      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.7;
       white-space: pre-wrap;
       overflow-wrap: break-word;
       word-break: normal;
@@ -218,48 +348,116 @@
     .desc pre.ascii {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       white-space: pre;
-      /* never wrap */
       overflow: auto;
       max-width: 100%;
-      background: #0c0c0c;
-      border: 1px solid #222;
-      border-radius: 8px;
-      padding: 8px 10px;
-      margin: 8px 0;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--mm-surface-border);
+      border-radius: var(--mm-radius);
+      padding: 12px;
+      margin: 12px 0;
+      backdrop-filter: blur(8px);
     }
 
     details summary {
       cursor: pointer;
+      user-select: none;
+    }
+
+    .faq {
+      margin: 1.5rem 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .faq details {
+      border: 1px solid var(--mm-surface-border);
+      border-radius: var(--mm-radius-md);
+      margin-bottom: 12px;
+      padding: 14px 18px;
+      background: rgba(15, 18, 30, 0.85);
+      transition: background var(--mm-transition-fast), border-color var(--mm-transition-fast);
+    }
+
+    .faq details[open] {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+
+    .faq summary {
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.92);
+      cursor: pointer;
+      outline: none;
+    }
+
+    .faq summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq summary::after {
+      content: "";
+      display: inline-block;
+      width: 0.45rem;
+      height: 0.45rem;
+      margin-left: 0.6rem;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(-45deg);
+      transition: transform var(--mm-transition-fast);
+    }
+
+    .faq details[open] summary::after {
+      transform: rotate(135deg);
+    }
+
+    .faq .answer {
+      margin-top: 12px;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.6;
     }
 
     .block-title {
-      font-weight: 800;
-      margin: .2rem 0 .6rem;
+      font-weight: 700;
+      margin: 0.2rem 0 0.8rem;
+      color: rgba(255, 255, 255, 0.95);
     }
 
     .subtle {
-      color: #9aa;
+      color: rgba(255, 255, 255, 0.6);
     }
 
     /* Recommended uses the same grid card layout as index */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 12px;
+      gap: clamp(12px, 1.5vw, 18px);
     }
 
     .rec-card {
-      background: #111;
-      border: 1px solid #222;
-      border-radius: 12px;
+      background: var(--mm-surface);
+      border: 1px solid var(--mm-surface-border);
+      border-radius: var(--mm-radius-md);
       overflow: hidden;
       display: block;
+      transition: var(--mm-transition);
+      box-shadow: var(--mm-shadow-sm);
+    }
+
+    .rec-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--mm-shadow-md), 0 0 0 1px var(--mm-surface-glow);
+      border-color: var(--mm-accent);
     }
 
     .thumb {
       aspect-ratio: 16/9;
       object-fit: cover;
       display: block;
+      transition: var(--mm-transition);
+    }
+
+    .rec-card:hover .thumb {
+      opacity: 0.9;
     }
 
     @media (min-width:550px) {
@@ -269,53 +467,125 @@
     }
 
     .body {
-      padding: 10px 12px;
+      padding: 14px 16px;
     }
 
     .title {
-      font-weight: 800;
-      margin-bottom: 6px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: rgba(255, 255, 255, 0.95);
     }
 
     .mini {
-      color: #9aa;
-      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.95rem;
     }
 
     .mini-meta {
       margin-top: 6px;
-      font-size: 1rem;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.5);
     }
 
     footer {
-      padding: 16px;
+      padding: clamp(20px, 2.5vw, 32px);
       text-align: center;
-      border-top: 1px solid #222;
-      color: #aaa
+      border-top: 1px solid var(--mm-surface-border);
+      color: rgba(255, 255, 255, 0.6);
+      background: var(--mm-surface);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-inner a {
+      color: var(--mm-accent);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color var(--mm-transition-fast);
+    }
+
+    .footer-inner a:hover {
+      color: var(--mm-accent-hover);
+    }
+
+    .socials {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      background: transparent;
+      text-decoration: none;
+      transition: transform 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+    }
+
+    .social-btn svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+      fill: currentColor;
+    }
+
+    .social-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--mm-accent);
+      transform: translateY(-1px);
+    }
+
+    .social-btn:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
     }
 
     /* Language switcher styles */
     .lang-switcher {
       position: relative;
       margin-left: auto;
+      z-index: 1000;
     }
 
     .lang-btn {
-      background: transparent;
-      border: 1px solid #333;
-      color: #fff;
-      padding: 8px;
-      border-radius: 6px;
+      background: var(--mm-surface);
+      border: 1px solid var(--mm-surface-border);
+      color: rgba(255, 255, 255, 0.9);
+      padding: 10px 14px;
+      border-radius: var(--mm-radius);
       cursor: pointer;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: var(--mm-transition);
+      box-shadow: var(--mm-shadow-sm);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s, border-color 0.2s;
+      gap: 6px;
     }
 
     .lang-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: #3ea6ff;
+      background: rgba(251, 191, 36, 0.1);
+      border-color: var(--mm-accent);
+      box-shadow: var(--mm-shadow-md), 0 0 0 1px var(--mm-surface-glow);
     }
 
     .lang-btn svg {
@@ -326,27 +596,30 @@
       position: absolute;
       right: 0;
       top: calc(100% + 8px);
-      background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 12px;
-      min-width: 200px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-      z-index: 100;
+      background: var(--mm-surface);
+      border: 1px solid var(--mm-surface-border);
+      border-radius: var(--mm-radius-md);
+      padding: 16px;
+      min-width: 220px;
+      box-shadow: var(--mm-shadow-lg), 0 0 0 1px var(--mm-surface-glow);
+      z-index: 9999;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
 
     .lang-panel__heading {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       font-size: 0.9rem;
-      color: #aaa;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
     }
 
     .lang-panel__list {
       list-style: none;
       padding: 0;
       margin: 0;
-      max-height: 300px;
+      max-height: 320px;
       overflow-y: auto;
     }
 
@@ -356,25 +629,25 @@
 
     .lang-option {
       width: 100%;
-      padding: 8px 12px;
+      padding: 10px 14px;
       background: transparent;
       border: none;
-      color: #ddd;
+      color: rgba(255, 255, 255, 0.85);
       text-align: left;
       cursor: pointer;
-      border-radius: 4px;
-      transition: background 0.2s;
+      border-radius: var(--mm-radius);
+      transition: var(--mm-transition);
       font-size: 0.95rem;
     }
 
     .lang-option:hover {
-      background: rgba(62, 166, 255, 0.2);
-      color: #fff;
+      background: rgba(251, 191, 36, 0.15);
+      color: var(--mm-accent);
     }
 
     .lang-option.active {
-      background: rgba(62, 166, 255, 0.3);
-      color: #3ea6ff;
+      background: rgba(251, 191, 36, 0.2);
+      color: var(--mm-accent);
       font-weight: 600;
     }
 
@@ -485,14 +758,16 @@
 
 <body>
   <header>
-    <a class="brand" href="/">
-      <img src="{{ site_logo_url or '/images/JasonMartocciLogo.webp' }}" width="28" height="28" alt="Logo">
-      <span data-i18n="hero_title">{{ site_name }}</span>
+    <a class="brand" href="index.html">
+      <img src="{{ site_logo_url or 'images/JasonMartocciLogo.webp' }}" width="28" height="28" alt="{{ site_name }}"
+        onerror="this.onerror=null;this.src='images/JasonMartocciLogo.webp';">
+      <span class="sr-only" data-i18n="hero_title">{{ site_name }}</span>
     </a>
     <h1 class="page-title">{{ title | truncate(60) }}</h1>
     <div class="lang-switcher" id="lang-switcher">
       <button type="button" class="lang-btn" id="lang-btn" aria-label="Choose language" title="Language">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
           <line x1="2" y1="12" x2="22" y2="12"></line>
           <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
@@ -522,39 +797,42 @@
     <section>
       <!-- Title + Stats (above the video) -->
       <div class="card" id="video-meta">
-        <h1 class="page-title h2">{{ title | truncate(60) }}</h1>
+        <h1 class="video-title">{{ title | truncate(60) }}</h1>
 
-        <div class="meta" style="margin-top:8px; display:flex; gap:12px; flex-wrap:wrap;">
+        <div class="meta">
           <span><span data-i18n="views_label">Views:</span> {{ view_count }}</span>
           <span><span data-i18n="likes_label">Likes:</span> {{ like_count }}</span>
           <span>
             <span data-i18n="channel_label">Channel:</span>
-            <a href="https://www.youtube.com/@{{ channel_handle }}" target="_blank" rel="noopener">
-              {{ channel_title or ("@" ~ channel_handle) }}
-            </a>Subscribers: {{ subs_known and subscriber_count or "—" }}
+            <a href="https://www.youtube.com/@{{ channel_handle_for_url or (channel_handle | replace('@', '')) }}"
+              target="_blank" rel="noopener">
+              {{ channel_title or channel_handle }}
+            </a>
+          </span>
+          <span>
+            <span data-i18n="subscribers_label">Subscribers:</span> {{ subs_known and subscriber_count or "—" }}
           </span>
         </div>
 
-        <p style="margin:.4rem 0 0">
+        <div class="meta-actions">
           <a class="link" data-i18n="subscribe_cta"
-            href="https://www.youtube.com/@{{ channel_handle }}?sub_confirmation=1" target="_blank"
-            rel="noopener">Subscribe</a>
-          &nbsp;|&nbsp;
+            href="https://www.youtube.com/@{{ channel_handle_for_url or (channel_handle | replace('@', '')) }}?sub_confirmation=1"
+            target="_blank" rel="noopener">Subscribe</a>
+          <span aria-hidden="true">•</span>
           <a class="link" data-i18n="watch_on_youtube" href="https://www.youtube.com/watch?v={{ video_id }}"
             target="_blank" rel="noopener">Watch on YouTube</a>
-        </p>
+        </div>
       </div>
 
       <div class="card">
         <!-- PLAYER -->
-        <div class="video"
-          style="position:relative;width:100%;margin:auto;margin-bottom:12px;aspect-ratio:16/9;overflow:hidden;border-radius:10px;border:1px solid #222;box-shadow:0 0 0 1px #111 inset, 0 10px 25px rgba(0,0,0,.35);">
+        <div class="video">
           <div id="player" role="region" aria-label="Video player: {{ title }}" style="position:absolute;inset:0;">
           </div>
         </div>
         <!-- CONTROLS (outside the .video box) -->
-        <div id="player-controls" style="margin:12px auto 0;position:relative;z-index:1;">
-          <div id="yt-controls" style="display:none;gap:8px;flex-wrap:wrap;">
+        <div id="player-controls">
+          <div id="yt-controls">
             <button id="play" type="button" aria-label="Play video">Play</button>
             <button id="pause" type="button" aria-label="Pause video">Pause</button>
             <button id="mute" type="button" aria-label="Mute video">Mute</button>
@@ -563,7 +841,7 @@
           </div>
 
           <!-- Fallback if API is blocked -->
-          <div id="yt-fallback" style="display:none;margin-top:12px;">
+          <div id="yt-fallback">
             <a id="yt-link" href="https://www.youtube.com/watch?v={{ video_id }}" target="_blank" rel="noopener">Watch
               on YouTube</a>
           </div>
@@ -716,10 +994,9 @@
       <div class="card faq" id="faq">
         <h2 class="block-title" data-i18n="faq_heading">Frequently Asked Questions</h2>
         {% for q,a in faqs %}
-        <details
-          style="margin-bottom:.6rem; border:1px solid #222; border-radius:8px; background:#0c0c0c; padding:.4rem .8rem;">
+        <details>
           <summary>{{ q }}</summary>
-          <div class="answer" style="padding:.6rem;color:#ccc">
+          <div class="answer">
             <div>{{ a|safe }}</div>
           </div>
         </details>
@@ -744,7 +1021,7 @@
         {% if related and related|length > 0 %}
         <div class="grid">
           {% for r in related %}
-          <a class="rec-card" href="{{ r.slug }}.html">
+          <a class="rec-card" href="../videos/{{ r.slug }}.html">
             <img class="thumb" decoding="async" loading="lazy"
               src="https://i.ytimg.com/vi/{{ r.video_id }}/hqdefault.jpg" width="320" height="180" alt="{{ r.title }}"
               onerror="this.onerror=null;this.src='/images/default-thumbnail.png'">
@@ -765,78 +1042,35 @@
 
   <footer>
     <div class="footer-inner">
-      <div><span data-i18n="copyright_prefix">©</span> {{ current_year }} Martocci Mayhem</div>
-
-      <style>
-        .socials {
-          display: flex;
-          align-items: center;
-          gap: .6rem;
-          flex-wrap: wrap
-        }
-
-        .social-btn {
-          width: 40px;
-          height: 40px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 999px;
-          border: 1px solid rgba(255, 255, 255, .25);
-          color: #fff;
-          background: transparent;
-          text-decoration: none;
-          transition: transform .12s ease, background .12s ease
-        }
-
-        .social-btn svg {
-          width: 20px;
-          height: 20px;
-          display: block;
-          fill: currentColor
-        }
-
-        .social-btn:hover {
-          background: rgba(255, 255, 255, .1);
-          transform: translateY(-1px)
-        }
-
-        .social-btn:focus-visible {
-          outline: 2px solid currentColor;
-          outline-offset: 2px
-        }
-      </style>
+      <div><span data-i18n="copyright_prefix">©</span> {{ current_year }} <a href="{{ brand_link }}" target="_blank"
+          rel="noopener noreferrer">Martocci Mayhem</a></div>
 
       <nav class="socials" aria-label="Social links">
-        <!-- X / Twitter -->
-        <a class="social-btn" href="https://x.com/MartocciMayhem" target="_blank" rel="noopener noreferrer"
-          aria-label="X (Twitter)" title="X (Twitter)">
+        <a class="social-btn" href="{{ socialX }}" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)"
+          title="X (Twitter)">
           <svg viewBox="0 0 1200 1227" aria-hidden="true">
             <path
               d="M714 519 1160 0H1064L663 464 357 0H0l463 681L0 1227h96l424-483 330 483h357L714 519ZM556 676l-49-70-389-553h167l314 445 49 70 401 569h-167L556 676Z" />
           </svg>
         </a>
 
-        <!-- TikTok -->
-        <a class="social-btn" href="https://www.tiktok.com/@MartocciMayhem" target="_blank" rel="noopener noreferrer"
-          aria-label="TikTok" title="TikTok">
+        <a class="social-btn" href="{{ socialTikTok }}" target="_blank" rel="noopener noreferrer" aria-label="TikTok"
+          title="TikTok">
           <svg viewBox="0 0 48 48" aria-hidden="true">
             <path
               d="M41,18.6c-3.4,0-6.6-1.1-9.2-3.1v12.4c0,7.8-6.3,14.1-14.1,14.1S3.5,35.7,3.5,27.9c0-6.3,4.1-11.6,9.8-13.4v6.3 c-2.1,1.3-3.5,3.7-3.5,6.4c0,4.1,3.4,7.5,7.5,7.5s7.5-3.4,7.5-7.5V6.5h6.4c0.6,3.6,3.4,6.6,7,7.5V18.6z" />
           </svg>
         </a>
 
-        <!-- YouTube -->
-        <a class="social-btn" href="https://www.youtube.com/@MartocciMayhem" target="_blank" rel="noopener noreferrer"
-          aria-label="YouTube" title="YouTube">
+        <a class="social-btn" href="{{ socialYouTube }}" target="_blank" rel="noopener noreferrer" aria-label="YouTube"
+          title="YouTube">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path
               d="M23.498 6.186a2.974 2.974 0 0 0-2.093-2.103C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.405.583a2.974 2.974 0 0 0-2.093 2.103C0 8.095 0 12 0 12s0 3.905.502 5.814a2.974 2.974 0 0 0 2.093 2.103C4.495 20.5 12 20.5 12 20.5s7.505 0 9.405-.583a2.974 2.974 0 0 0 2.093-2.103C24 15.905 24 12 24 12s0-3.905-.502-5.814ZM9.75 15.5v-7l6.5 3.5-6.5 3.5Z" />
           </svg>
         </a>
 
-        <!-- Instagram -->
-        <a class="social-btn" href="https://www.instagram.com/MartocciMayhem" target="_blank" rel="noopener noreferrer"
+        <a class="social-btn" href="{{ socialInstagram }}" target="_blank" rel="noopener noreferrer"
           aria-label="Instagram" title="Instagram">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path
@@ -844,8 +1078,7 @@
           </svg>
         </a>
 
-        <!-- Facebook -->
-        <a class="social-btn" href="https://www.facebook.com/MartocciMayhem" target="_blank" rel="noopener noreferrer"
+        <a class="social-btn" href="{{ socialFacebook }}" target="_blank" rel="noopener noreferrer"
           aria-label="Facebook" title="Facebook">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path
@@ -853,9 +1086,8 @@
           </svg>
         </a>
 
-        <!-- LinkedIn -->
-        <a class="social-btn" href="https://www.linkedin.com/in/MartocciMayhem" target="_blank"
-          rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
+        <a class="social-btn" href="{{ socialLinkedIn }}" target="_blank" rel="noopener noreferrer"
+          aria-label="LinkedIn" title="LinkedIn">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path
               d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3.5 8.98h2.96V21H3.5zM9 8.98h2.84v1.63h.04c.4-.75 1.38-1.54 2.84-1.54 3.03 0 3.59 1.99 3.59 4.57V21h-2.96v-4.92c0-1.17-.02-2.67-1.63-2.67-1.63 0-1.88 1.27-1.88 2.58V21H9z" />
@@ -865,7 +1097,7 @@
     </div>
   </footer>
 
-  <script src="/assets/i18n.js" defer></script>
+  <script src="assets/i18n.js" defer></script>
   <!-- generated by Mayhem Maker v{{ app_version }} @ {{ build_stamp }}Z -->
 </body>
 
